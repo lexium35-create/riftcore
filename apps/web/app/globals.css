@@ -14,7 +14,7 @@ body {
   margin: 0;
   min-height: 100%;
   background:
-    radial-gradient(circle at 80% 10%, rgba(72, 255, 189, 0.10), transparent 35%),
+    radial-gradient(circle at 80% 10%, rgba(72, 255, 189, 0.1), transparent 35%),
     #080b0d;
 }
 
@@ -22,10 +22,38 @@ body {
   min-height: 100vh;
 }
 
+a {
+  color: inherit;
+}
+
 .shell {
   width: min(1120px, calc(100% - 40px));
   margin: 0 auto;
-  padding: 96px 0 72px;
+  padding: 40px 0 72px;
+}
+
+.shell.narrow {
+  width: min(900px, calc(100% - 40px));
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 80px;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+}
+
+.topbar div {
+  display: flex;
+  gap: 24px;
+}
+
+.topbar a,
+.backlink {
+  color: #93a1a5;
+  text-decoration: none;
 }
 
 .hero {
@@ -48,8 +76,13 @@ h1 {
   text-transform: uppercase;
 }
 
+.pageTitle {
+  margin-top: 18px;
+  font-size: clamp(48px, 8vw, 96px);
+}
+
 .lede {
-  max-width: 640px;
+  max-width: 680px;
   margin: 36px 0 0;
   color: #aeb9bc;
   font-size: clamp(18px, 2vw, 24px);
@@ -72,6 +105,47 @@ h1 {
   color: #82ffc4;
 }
 
+.actionRow {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.primaryButton,
+.secondaryButton {
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: 3px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primaryButton {
+  border: 0;
+  background: #82ffc4;
+  color: #06100b;
+}
+
+.primaryButton:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.linkButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.secondaryButton {
+  border: 1px solid #273236;
+  background: transparent;
+  color: #d7dfe1;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -79,14 +153,22 @@ h1 {
   margin-top: 96px;
 }
 
-.card {
-  min-height: 180px;
-  padding: 20px;
+.card,
+.stat,
+.formPanel,
+.opsRail > div {
   border: 1px solid #20282b;
   background: rgba(255, 255, 255, 0.025);
 }
 
-.card span {
+.card {
+  min-height: 180px;
+  padding: 20px;
+}
+
+.card span,
+.stat span,
+.opsRail span {
   color: #66757a;
   font-size: 12px;
 }
@@ -97,18 +179,172 @@ h1 {
   font-weight: 600;
 }
 
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 64px;
+}
+
+.stat {
+  padding: 20px;
+}
+
+.stat strong {
+  display: block;
+  margin-top: 36px;
+  font-size: 20px;
+}
+
+.formStack {
+  display: grid;
+  gap: 16px;
+  margin-top: 48px;
+}
+
+.formPanel {
+  padding: 24px;
+}
+
+.formPanel h2 {
+  margin: 0 0 24px;
+}
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 12px;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+  color: #a9b5b8;
+  font-size: 13px;
+}
+
+input {
+  min-width: 0;
+  border: 1px solid #273236;
+  border-radius: 2px;
+  background: #0d1214;
+  color: #f2f6f7;
+  padding: 12px;
+  font: inherit;
+}
+
+.formPanel > label {
+  margin-top: 16px;
+}
+
+.panelHeading,
+.playerMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggle,
+.captainChoice {
+  display: flex;
+  grid-template-columns: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.roster {
+  display: grid;
+  gap: 10px;
+}
+
+.playerRow {
+  display: grid;
+  grid-template-columns: 120px 1.4fr 1fr 0.8fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.playerMeta > span {
+  color: #82ffc4;
+  font-weight: 800;
+}
+
+.formResult {
+  margin: 0;
+  color: #b9c7ca;
+}
+
+.opsRail {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.opsRail > div {
+  padding: 20px;
+}
+
+.opsRail h2 {
+  margin: 40px 0 8px;
+  font-size: 16px;
+}
+
+.opsRail p {
+  margin: 0;
+  color: #8ea0a5;
+  font-size: 13px;
+}
+
 @media (max-width: 800px) {
-  .shell {
+  .shell,
+  .shell.narrow {
     width: min(100% - 28px, 1120px);
-    padding-top: 64px;
   }
 
-  .grid {
+  .topbar {
+    margin-bottom: 60px;
+  }
+
+  .grid,
+  .statGrid,
+  .opsRail {
     grid-template-columns: 1fr 1fr;
-    margin-top: 64px;
+    margin-top: 48px;
   }
 
   .card:last-child {
     grid-column: 1 / -1;
+  }
+
+  .playerRow {
+    grid-template-columns: 1fr 1fr;
+    padding: 16px 0;
+    border-top: 1px solid #20282b;
+  }
+
+  .playerMeta {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 520px) {
+  .fieldGrid,
+  .grid,
+  .statGrid,
+  .opsRail {
+    grid-template-columns: 1fr;
+  }
+
+  .card:last-child {
+    grid-column: auto;
+  }
+
+  .playerRow {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar div {
+    gap: 12px;
   }
 }

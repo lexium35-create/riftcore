@@ -8,9 +8,23 @@ The repository is the operational home for tournament registration, brackets, ma
 
 **Riftcore — 13 October 2026**
 
-The event-specific configuration lives in:
+Tournament configuration:
 
 `data/tournaments/2026-10-13-riftcore-open.json`
+
+## What works now
+
+- Responsive public event shell
+- Tournament detail page
+- Team registration UI
+- Server-side roster validation
+- Five-starter + optional-substitute enforcement
+- Captain validation
+- Duplicate MLBB identity detection
+- Local development registration persistence
+- Match-state transition rules
+- Development operator console with registration counts
+- Production guard around the unauthenticated operator surface
 
 ## Repository structure
 
@@ -19,37 +33,43 @@ riftcore/
 ├─ apps/
 │  └─ web/                 # Public tournament website + operator UI
 ├─ packages/
-│  └─ tournament-core/     # Shared tournament domain types/logic
+│  └─ tournament-core/     # Shared tournament domain rules
 ├─ data/
-│  └─ tournaments/         # Event configuration and structured tournament data
+│  └─ tournaments/         # Event configuration
 ├─ docs/
 │  ├─ architecture.md
-│  └─ operations/          # Rules, registration and tournament-day runbooks
-└─ .github/                # Issue templates and repository workflows
+│  ├─ backend-contract.md
+│  └─ operations/
+└─ .github/
 ```
 
 ## Local development
 
 ```bash
 pnpm install
+cp .env.example .env
 pnpm dev
 ```
 
-The web app is available at `http://localhost:3000`.
+The web app runs at `http://localhost:3000`.
 
-## Initial product surfaces
+Registration data is stored locally in `.riftcore/runtime.json` and is intentionally ignored by Git.
 
-- Tournament landing page
-- Team/player registration
-- Check-in
-- Bracket and match schedule
-- Lobby assignment
-- Match reporting
-- Dispute/referee workflow
-- Staff operations dashboard
-- Results and standings
-- Tournament archive
+## Important production boundary
+
+The current file storage adapter is **development-only** and refuses writes in production.
+
+Before Riftcore is deployed, the next infrastructure stage must add:
+
+- persistent database storage;
+- authenticated operator accounts;
+- role-based authorization;
+- registration audit history;
+- rate limiting / abuse controls;
+- production secrets and telemetry.
+
+See `docs/backend-contract.md`.
 
 ## Operating principle
 
-Tournament state should be structured data first. Public UI, staff UI, brackets, bots, overlays and future integrations should read from the same canonical tournament model.
+Tournament state is structured data first. Public UI, staff UI, brackets, bots, overlays and integrations should consume the same canonical tournament model.
