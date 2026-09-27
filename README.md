@@ -20,15 +20,17 @@ Riftcore is connected to the **Vaelrix / Riftcore Supabase project**.
 Current database layer:
 
 - PostgreSQL tournament records
-- team registrations
-- player rosters
+- team registrations and player rosters
 - Row Level Security
-- transaction-safe registration RPC
+- transaction-safe public registration RPC
 - duplicate MLBB identity protection
-- aggregate registration summary RPC
+- Supabase Auth operator sessions
+- owner / admin / referee roles
+- authenticated registration review + check-in RPCs
+- operator audit trail
 - no service-role secret in the application
 
-The database migration is versioned under `supabase/migrations/`.
+Database migrations are versioned under `supabase/migrations/`.
 
 ## What works now
 
@@ -40,9 +42,12 @@ The database migration is versioned under `supabase/migrations/`.
 - Five-starter + optional-substitute enforcement
 - Captain validation
 - Duplicate MLBB identity detection
-- Match-state transition rules
-- Development operator console with live Supabase registration counts
-- Production guard around the unauthenticated operator surface
+- Operator login
+- Role-checked registration review
+- Verify / reject / reopen workflow
+- Verified-team check-in
+- Database audit logging
+- Match-state transition domain rules
 - GitHub Actions typecheck + production build verification
 - Android/Termux-compatible Next.js Webpack development mode
 
@@ -54,25 +59,31 @@ cp .env.example .env
 pnpm dev
 ```
 
-The web app runs at `http://localhost:3000`.
+The public app runs at `http://localhost:3000`.
 
-If an older local `.env` already exists, copy the two
-`NEXT_PUBLIC_SUPABASE_*` values from `.env.example` into it.
+Operator login:
 
-## Important production boundary
+```text
+http://localhost:3000/ops/login
+```
 
-The backend is real, but **Riftcore is not production-ready yet**.
+A Supabase Auth user must also have an active row in
+`public.operator_profiles`. See
+`docs/operations/operator-access.md`.
 
-Before deployment, the next infrastructure stage should add:
+## Production boundary
 
-- authenticated operator accounts;
-- role-based authorization for staff actions;
-- registration review/audit history;
+Riftcore is **not deployed** and should remain that way until explicitly
+approved.
+
+Before production launch, remaining infrastructure includes:
+
+- operator account provisioning/recovery policy;
 - rate limiting / abuse controls;
-- check-in state transitions;
+- bracket generation and seeding;
+- match/lobby operations;
+- disputes;
 - production telemetry.
-
-See `docs/backend-contract.md`.
 
 ## Operating principle
 

@@ -2,7 +2,7 @@
 
 Riftcore is connected to the **Vaelrix / Riftcore Supabase project**.
 
-## Current registration flow
+## Public registration flow
 
 ```text
 /register
@@ -21,23 +21,38 @@ PostgreSQL transaction
    └─ registration_players
 ```
 
+## Operator flow
+
+```text
+/ops/login
+   ↓
+Supabase Auth
+   ↓
+authenticated browser session
+   ↓
+operator_profiles role check
+   ↓
+role-scoped RPCs
+   ├─ list_tournament_registrations
+   ├─ set_registration_status
+   └─ set_registration_check_in
+   ↓
+operator_audit_log
+```
+
 ## Security boundary
 
 The application does **not** use a Supabase service-role key.
 
-The repository is public, so only Supabase's public project URL and
-publishable key are configured in `.env.example`.
+The public repository contains only Supabase's project URL and publishable
+key. Those are expected client-side values.
 
-All three underlying tables have Row Level Security enabled and direct
-`anon` / `authenticated` table access is revoked.
+All backend tables have Row Level Security enabled. Direct `anon` and
+`authenticated` access to registration/operator tables is revoked.
 
-Anonymous application traffic receives only these RPC capabilities:
-
-- `submit_team_registration(...)`
-- `get_tournament_registration_summary(...)`
-
-The submission function is `SECURITY DEFINER` and performs the database
-write as one transaction.
+Public traffic can execute only the registration-submission capability.
+Operator RPCs require a Supabase authenticated session and an active
+`operator_profiles` row.
 
 ## Registration invariants enforced in PostgreSQL
 
@@ -52,14 +67,12 @@ write as one transaction.
 - optional max-team capacity enforcement;
 - writes serialized per tournament to prevent registration race conditions.
 
-## Operator data
+## Operator invariants
 
-Captain contact information and roster records are not directly readable
-through the publishable key.
+- owner/admin may approve, reject and reopen registrations;
+- referee may not alter verification status;
+- check-in requires a verified registration;
+- leaving verified state automatically clears check-in;
+- every operator mutation is stored in `operator_audit_log`.
 
-The current `/ops` page can retrieve only aggregate registration counts
-through a dedicated summary RPC.
-
-Before production deployment, operator authentication and role-based RPCs
-must be added for registration review, check-in, seeding, match operations
-and disputes.
+See `docs/operations/operator-access.md`.
