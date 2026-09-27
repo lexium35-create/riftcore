@@ -1,0 +1,35 @@
+{
+  "id": "riftcore-2026-10-13",
+  "slug": "riftcore-2026-10-13",
+  "name": "Riftcore — 13 October 2026",
+  "game": "MLBB",
+  "date": "2026-10-13",
+  "timezone": "Asia/Kolkata",
+  "status": "draft",
+  "teamSize": 5,
+  "substituteSlots": 1,
+  "format": null,
+  "maxTeams": null,
+  "registration": {
+    "opensAt": null,
+    "closesAt": null,
+    "checkInOpensAt": null,
+    "checkInClosesAt": null
+  },
+  "competitive": {
+    "defaultBestOf": null,
+    "grandFinalBestOf": null,
+    "thirdPlaceMatch": null
+  },
+  "prizePool": {
+    "currency": "INR",
+    "total": null,
+    "distribution": []
+  },
+  "links": {
+    "registration": null,
+    "rules": null,
+    "discord": null,
+    "stream": null
+  }
+}

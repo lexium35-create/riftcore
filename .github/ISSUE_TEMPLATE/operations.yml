@@ -1,0 +1,34 @@
+name: Tournament operations
+description: Track an event operations task or decision
+title: "[ops] "
+labels: ["operations"]
+body:
+  - type: input
+    id: tournament
+    attributes:
+      label: Tournament
+      placeholder: riftcore-2026-10-13
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Registration
+        - Check-in
+        - Seeding
+        - Lobby
+        - Refereeing
+        - Results
+        - Dispute
+        - Broadcast
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: Task or decision
+    validations:
+      required: true
