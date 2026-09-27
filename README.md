@@ -2,7 +2,8 @@
 
 **Riftcore** is an MLBB tournament operator and competition platform.
 
-The repository is the operational home for tournament registration, brackets, match reporting, rules, staff workflows, and the public event experience.
+The repository is the operational home for tournament registration, brackets,
+match reporting, rules, staff workflows, and the public event experience.
 
 ## Current event
 
@@ -12,36 +13,38 @@ Tournament configuration:
 
 `data/tournaments/2026-10-13-riftcore-open.json`
 
+## Backend
+
+Riftcore is connected to the **Vaelrix / Riftcore Supabase project**.
+
+Current database layer:
+
+- PostgreSQL tournament records
+- team registrations
+- player rosters
+- Row Level Security
+- transaction-safe registration RPC
+- duplicate MLBB identity protection
+- aggregate registration summary RPC
+- no service-role secret in the application
+
+The database migration is versioned under `supabase/migrations/`.
+
 ## What works now
 
 - Responsive public event shell
 - Tournament detail page
 - Team registration UI
 - Server-side roster validation
+- Supabase-backed registration persistence
 - Five-starter + optional-substitute enforcement
 - Captain validation
 - Duplicate MLBB identity detection
-- Local development registration persistence
 - Match-state transition rules
-- Development operator console with registration counts
+- Development operator console with live Supabase registration counts
 - Production guard around the unauthenticated operator surface
-
-## Repository structure
-
-```text
-riftcore/
-├─ apps/
-│  └─ web/                 # Public tournament website + operator UI
-├─ packages/
-│  └─ tournament-core/     # Shared tournament domain rules
-├─ data/
-│  └─ tournaments/         # Event configuration
-├─ docs/
-│  ├─ architecture.md
-│  ├─ backend-contract.md
-│  └─ operations/
-└─ .github/
-```
+- GitHub Actions typecheck + production build verification
+- Android/Termux-compatible Next.js Webpack development mode
 
 ## Local development
 
@@ -53,23 +56,26 @@ pnpm dev
 
 The web app runs at `http://localhost:3000`.
 
-Registration data is stored locally in `.riftcore/runtime.json` and is intentionally ignored by Git.
+If an older local `.env` already exists, copy the two
+`NEXT_PUBLIC_SUPABASE_*` values from `.env.example` into it.
 
 ## Important production boundary
 
-The current file storage adapter is **development-only** and refuses writes in production.
+The backend is real, but **Riftcore is not production-ready yet**.
 
-Before Riftcore is deployed, the next infrastructure stage must add:
+Before deployment, the next infrastructure stage should add:
 
-- persistent database storage;
 - authenticated operator accounts;
-- role-based authorization;
-- registration audit history;
+- role-based authorization for staff actions;
+- registration review/audit history;
 - rate limiting / abuse controls;
-- production secrets and telemetry.
+- check-in state transitions;
+- production telemetry.
 
 See `docs/backend-contract.md`.
 
 ## Operating principle
 
-Tournament state is structured data first. Public UI, staff UI, brackets, bots, overlays and integrations should consume the same canonical tournament model.
+Tournament state is structured data first. Public UI, staff UI, brackets,
+bots, overlays and integrations should consume the same canonical tournament
+model.

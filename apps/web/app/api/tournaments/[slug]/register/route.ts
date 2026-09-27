@@ -1,6 +1,6 @@
 import type { TeamRegistrationInput } from "@riftcore/tournament-core";
 import { validateTeamRegistration } from "@riftcore/tournament-core";
-import { saveRegistration } from "@/lib/runtime-store";
+import { saveRegistration } from "@/lib/registration-store";
 import { getTournamentBySlug } from "@/lib/tournaments";
 
 export async function POST(

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getTournamentRuntimeSummary } from "@/lib/runtime-store";
+import { getTournamentRuntimeSummary } from "@/lib/registration-store";
 import { getTournamentBySlug } from "@/lib/tournaments";
 
 const TOURNAMENT_SLUG = "riftcore-2026-10-13";
@@ -23,8 +23,9 @@ export default async function OpsPage() {
       <p className="eyebrow">RIFTCORE / OPERATOR CONSOLE</p>
       <h1 className="pageTitle">Control room.</h1>
       <p className="lede">
-        Development operator surface. Production access remains disabled
-        until authentication and authorization are implemented.
+        Development operator surface backed by the Riftcore Supabase project.
+        Production access remains disabled until operator authentication and
+        authorization are implemented.
       </p>
 
       <section className="statGrid">

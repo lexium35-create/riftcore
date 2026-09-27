@@ -1,8 +1,8 @@
 # Backend contract
 
-Riftcore now has a working local registration path, but production storage is deliberately not selected yet.
+Riftcore is connected to the **Vaelrix / Riftcore Supabase project**.
 
-## Current flow
+## Current registration flow
 
 ```text
 /register
@@ -11,36 +11,55 @@ POST /api/tournaments/:slug/register
    ↓
 @riftcore/tournament-core validation
    ↓
-runtime storage adapter
+Supabase publishable client
    ↓
-.riftcore/runtime.json (development only)
+submit_team_registration(...) RPC
+   ↓
+PostgreSQL transaction
+   ├─ tournaments
+   ├─ team_registrations
+   └─ registration_players
 ```
 
-## Why the file adapter exists
+## Security boundary
 
-It allows the registration, validation, duplicate-player detection and operator-count flow to be exercised end to end before a database decision is locked in.
+The application does **not** use a Supabase service-role key.
 
-It is **not** production storage.
+The repository is public, so only Supabase's public project URL and
+publishable key are configured in `.env.example`.
 
-The file adapter refuses writes when `NODE_ENV=production`.
+All three underlying tables have Row Level Security enabled and direct
+`anon` / `authenticated` table access is revoked.
 
-## Production adapter requirements
+Anonymous application traffic receives only these RPC capabilities:
 
-The eventual persistent backend must preserve these invariants:
+- `submit_team_registration(...)`
+- `get_tournament_registration_summary(...)`
 
-1. A registration has a stable unique ID.
-2. A player identity is MLBB account ID + server ID.
-3. The same active player identity cannot belong to multiple teams in the same tournament.
-4. A registration change must be auditable.
-5. Check-in state must be separate from registration verification.
-6. Match transitions must be validated by domain rules, not only UI buttons.
-7. Staff-only operations require authenticated role checks.
-8. Public endpoints must never expose captain contact details or private staff notes.
+The submission function is `SECURITY DEFINER` and performs the database
+write as one transaction.
 
-## Operator console
+## Registration invariants enforced in PostgreSQL
 
-`/ops` exists for development.
+- exactly five starters for the current event;
+- no more than one substitute;
+- exactly one captain;
+- captain must be a starter;
+- numeric MLBB account ID and server ID;
+- no duplicate MLBB identity inside one roster;
+- no active duplicate MLBB identity across teams in the same tournament;
+- no duplicate active team name in one tournament;
+- optional max-team capacity enforcement;
+- writes serialized per tournament to prevent registration race conditions.
 
-In production it returns a 404 unless `RIFTCORE_ENABLE_UNAUTH_OPS=true`.
+## Operator data
 
-That override is for controlled testing only. The intended production design is authenticated operator access.
+Captain contact information and roster records are not directly readable
+through the publishable key.
+
+The current `/ops` page can retrieve only aggregate registration counts
+through a dedicated summary RPC.
+
+Before production deployment, operator authentication and role-based RPCs
+must be added for registration review, check-in, seeding, match operations
+and disputes.
