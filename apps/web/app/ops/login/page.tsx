@@ -5,17 +5,52 @@ import { useRouter } from "next/navigation";
 import { getRiftcoreBrowserSupabase } from "@/lib/supabase-browser";
 import styles from "../ops.module.css";
 
-type OAuthProvider = "google" | "discord" | "github";
+type OAuthProvider =
+  | "google"
+  | "discord"
+  | "github"
+  | "custom:telegram";
 
 const socialProviders: Array<{
   id: OAuthProvider;
   label: string;
   hint: string;
+  scopes?: string;
 }> = [
   { id: "google", label: "Continue with Google", hint: "Google" },
-  { id: "discord", label: "Continue with Discord", hint: "Discord" },
-  { id: "github", label: "Continue with GitHub", hint: "GitHub" },
+  {
+    id: "discord",
+    label: "Continue with Discord",
+    hint: "Discord",
+    scopes: "identify email",
+  },
+  {
+    id: "github",
+    label: "Continue with GitHub",
+    hint: "GitHub",
+    scopes: "read:user user:email",
+  },
+  {
+    id: "custom:telegram",
+    label: "Continue with Telegram",
+    hint: "Telegram",
+  },
 ];
+
+function readableOAuthError(message: string): string {
+  const lower = message.toLowerCase();
+
+  if (
+    lower.includes("provider") &&
+    (lower.includes("not enabled") ||
+      lower.includes("unsupported") ||
+      lower.includes("not found"))
+  ) {
+    return "This sign-in provider is wired into Riftcore but is not enabled in Supabase yet.";
+  }
+
+  return message;
+}
 
 export default function OperatorLoginPage() {
   const router = useRouter();
@@ -37,21 +72,18 @@ export default function OperatorLoginPage() {
     setSocialBusy(provider);
 
     const redirectTo = `${window.location.origin}/auth/callback?next=/ops`;
-
-    const options =
-      provider === "github"
-        ? { redirectTo, scopes: "read:user user:email" }
-        : provider === "discord"
-          ? { redirectTo, scopes: "identify email" }
-          : { redirectTo };
+    const selected = socialProviders.find((item) => item.id === provider);
 
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider,
-      options,
+      options: {
+        redirectTo,
+        ...(selected?.scopes ? { scopes: selected.scopes } : {}),
+      },
     });
 
     if (oauthError) {
-      setError(oauthError.message);
+      setError(readableOAuthError(oauthError.message));
       setSocialBusy(null);
     }
   }
