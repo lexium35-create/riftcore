@@ -495,3 +495,40 @@
     gap: 10px;
   }
 }
+
+
+/* Mobile containment */
+.shell,
+.accountShell,
+.brandArea,
+.panel,
+.panelInner,
+.statement,
+.accountWrap,
+.accountHero,
+.accountGrid {
+  min-width: 0;
+}
+
+.shell,
+.accountShell {
+  overflow-x: clip;
+}
+
+.statement h1,
+.panel h2,
+.accountHero h1 {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 520px) {
+  .socialButton {
+    grid-template-columns: 62px minmax(0, 1fr) 14px;
+    padding-inline: 10px;
+  }
+
+  .socialButton strong {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
