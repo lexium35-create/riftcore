@@ -4,19 +4,17 @@ import { RIFTCORE_COMMUNITY } from "@/lib/community";
 const channels = [
   {
     label: "TELEGRAM / FAST LANE",
-    title: "Riftcore Telegram",
-    copy: "Announcements, registration reminders, match-day pings and fast community conversation. Cypher is already inside as the official Riftcore bot.",
+    title: "Telegram",
+    copy: "Announcements, registration reminders, match-day pings and fast community conversation.",
     href: RIFTCORE_COMMUNITY.telegramGroup,
     action: "Join Telegram",
-    meta: RIFTCORE_COMMUNITY.telegramBotHandle,
   },
   {
     label: "DISCORD / OPERATIONS",
-    title: "Riftcore Discord",
+    title: "Discord",
     copy: "Structured tournament operations: captain desk, match coordination, score reporting, support, community rooms and staff-run match-day channels.",
     href: RIFTCORE_COMMUNITY.discord,
     action: "Join Discord",
-    meta: "Official Riftcore server",
   },
 ];
 
@@ -62,29 +60,12 @@ export default function CommunityPage() {
             <span className="communityLabel">{channel.label}</span>
             <h2>{channel.title}</h2>
             <p>{channel.copy}</p>
-            <div className="communityMeta">{channel.meta}</div>
             <a href={channel.href} target="_blank" rel="noreferrer">
               <span>{channel.action}</span>
               <b>↗</b>
             </a>
           </article>
         ))}
-      </section>
-
-      <section className="communityBotPanel">
-        <div>
-          <span className="sectionIndex">/ CYPHER</span>
-          <h2>One bot. One community signal.</h2>
-          <p>
-            {RIFTCORE_COMMUNITY.telegramBotHandle} is the connected Telegram bot
-            for Riftcore. We use it for official group communication and future
-            tournament automation.
-          </p>
-        </div>
-        <a className="ctaPrimary" href={RIFTCORE_COMMUNITY.telegramBot} target="_blank" rel="noreferrer">
-          <span>Open Cypher</span>
-          <span>↗</span>
-        </a>
       </section>
 
       <section className="communitySafety">

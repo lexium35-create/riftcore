@@ -172,48 +172,21 @@ export default function Home() {
           <article className="communityCard">
             <div className="communityCardTop"><span>01</span><i /></div>
             <span className="communityLabel">TELEGRAM / FAST LANE</span>
-            <h3>Riftcore Telegram</h3>
-            <p>Fast announcements, reminders, match-day pings and direct community conversation with Cypher inside the group.</p>
-            <div className="communityMeta">@Cyber_tetris_bot</div>
+            <h3>Telegram</h3>
+            <p>Fast announcements, reminders, match-day pings and direct community conversation.</p>
             <a href="https://t.me/+2R97p2DNghQ5Njdl" target="_blank" rel="noreferrer"><span>Join Telegram</span><b>↗</b></a>
           </article>
 
           <article className="communityCard">
             <div className="communityCardTop"><span>02</span><i /></div>
             <span className="communityLabel">DISCORD / OPERATIONS</span>
-            <h3>Riftcore Discord</h3>
+            <h3>Discord</h3>
             <p>Captain desk, match coordination, results, disputes, support, voice rooms and the structured side of tournament operations.</p>
-            <div className="communityMeta">Official Riftcore server</div>
             <a href="https://discord.gg/U4TbBEfR2Q" target="_blank" rel="noreferrer"><span>Join Discord</span><b>↗</b></a>
           </article>
         </div>
 
         <a className="textLink" href="/community">Open community hub <span>→</span></a>
-      </section>
-
-      <section className="commandSection">
-        <div className="commandVisual" aria-hidden="true">
-          <span className="crosshair crosshairA">+</span>
-          <span className="crosshair crosshairB">+</span>
-          <div className="commandRing">
-            <span>RIFTCORE</span>
-            <strong>OPS</strong>
-            <small>LIVE CONTROL</small>
-          </div>
-        </div>
-
-        <div className="commandCopy">
-          <span className="sectionIndex">/ CONTROL ROOM</span>
-          <h2>Competition should feel intense. Operations should not.</h2>
-          <p>
-            Staff access is separated from public registration. Approved
-            operators review teams, verify rosters and control check-in from a
-            dedicated workspace.
-          </p>
-          <a className="textLink" href="/ops">
-            Enter operator console <span>→</span>
-          </a>
-        </div>
       </section>
 
       <footer className="siteFooter">

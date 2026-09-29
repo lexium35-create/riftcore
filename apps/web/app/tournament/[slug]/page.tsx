@@ -67,7 +67,6 @@ export default async function TournamentPage({
               <span>Register team</span>
               <span>↗</span>
             </a>
-            <a className="ctaGhost" href="/ops">Staff console</a>
           </div>
         </div>
 
