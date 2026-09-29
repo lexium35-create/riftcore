@@ -105,7 +105,7 @@ export default function RegisterPage() {
         </a>
         <div className="navLinks">
           <a href="/tournament/riftcore-2026-10-13">Tournament</a>
-          <a className="navOps" href="/ops/login">Ops</a>
+          <a className="navOps" href="/login">Sign in</a>
         </div>
       </nav>
 

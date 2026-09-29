@@ -8,7 +8,7 @@ export default function AuthCallbackPage() {
         minHeight: "100vh",
         display: "grid",
         placeItems: "center",
-        background: "#080b0d",
+        background: "#07090a",
         color: "#f2f6f7",
         padding: 24,
         fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif",
@@ -19,7 +19,7 @@ export default function AuthCallbackPage() {
           <div style={{ maxWidth: 520 }}>
             <p
               style={{
-                color: "#82ffc4",
+                color: "#b5ff63",
                 fontSize: 11,
                 fontWeight: 800,
                 letterSpacing: "0.18em",

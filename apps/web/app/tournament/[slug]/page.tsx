@@ -39,7 +39,7 @@ export default async function TournamentPage({
         <div className="navLinks">
           <a href="/">Home</a>
           <a href="/register">Register</a>
-          <a className="navOps" href="/ops/login">Ops</a>
+          <a className="navOps" href="/login">Sign in</a>
         </div>
       </nav>
 
@@ -60,7 +60,7 @@ export default async function TournamentPage({
               <span>Register team</span>
               <span>↗</span>
             </a>
-            <a className="ctaGhost" href="/ops/login">Staff console</a>
+            <a className="ctaGhost" href="/ops">Staff console</a>
           </div>
         </div>
 

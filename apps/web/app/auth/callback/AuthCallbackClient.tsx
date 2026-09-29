@@ -6,7 +6,7 @@ import { getRiftcoreBrowserSupabase } from "@/lib/supabase-browser";
 
 function safeNext(value: string | null): string {
   if (!value || !value.startsWith("/") || value.startsWith("//")) {
-    return "/ops";
+    return "/account";
   }
 
   return value;
@@ -69,7 +69,7 @@ export default function AuthCallbackClient() {
     <div style={{ maxWidth: 520 }}>
       <p
         style={{
-          color: "#82ffc4",
+          color: "#b5ff63",
           fontSize: 11,
           fontWeight: 800,
           letterSpacing: "0.18em",

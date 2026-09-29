@@ -66,7 +66,7 @@ export default function OpsPage() {
     } = await supabase.auth.getSession();
 
     if (!session) {
-      router.replace("/ops/login");
+      router.replace("/login?next=/ops");
       return;
     }
 
@@ -109,7 +109,7 @@ export default function OpsPage() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!session) router.replace("/ops/login");
+      if (!session) router.replace("/login?next=/ops");
     });
 
     return () => subscription.unsubscribe();
@@ -206,7 +206,7 @@ export default function OpsPage() {
 
   async function signOut() {
     await supabase.auth.signOut();
-    router.replace("/ops/login");
+    router.replace("/login");
   }
 
   if (loading) {

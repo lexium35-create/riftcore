@@ -1,0 +1,497 @@
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 560px);
+  background:
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
+    radial-gradient(circle at 78% 8%, rgba(181,255,99,.07), transparent 32%),
+    #07090a;
+  background-size: 64px 64px, 64px 64px, auto, auto;
+  color: #f4f7f5;
+}
+
+.brandArea {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px clamp(28px, 6vw, 84px) 48px;
+  border-right: 1px solid #202629;
+}
+
+.brand {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.mark {
+  min-width: 54px;
+  height: 28px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid #b5ff63;
+  color: #b5ff63;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+
+.word {
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.statement {
+  max-width: 720px;
+  padding: 80px 0;
+}
+
+.kicker,
+.panelKicker {
+  color: #b5ff63;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+}
+
+.statement h1 {
+  margin: 20px 0 0;
+  font-size: clamp(64px, 9vw, 132px);
+  line-height: .82;
+  letter-spacing: -.07em;
+  text-transform: uppercase;
+}
+
+.statement h1 span {
+  display: block;
+  color: transparent;
+  -webkit-text-stroke: 1px #687174;
+}
+
+.statement p {
+  max-width: 620px;
+  margin: 32px 0 0;
+  color: #8b9699;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.footnote {
+  color: #465053;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.panel {
+  display: grid;
+  align-content: center;
+  padding: clamp(30px, 5vw, 72px);
+  background: rgba(7,9,10,.82);
+}
+
+.panelInner {
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+}
+
+.panel h2 {
+  margin: 12px 0 0;
+  font-size: clamp(38px, 5vw, 58px);
+  line-height: .94;
+  letter-spacing: -.055em;
+  text-transform: uppercase;
+}
+
+.panelLead {
+  margin: 17px 0 0;
+  color: #7f8a8d;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.socials {
+  display: grid;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.socialButton,
+.primary,
+.secondary {
+  width: 100%;
+  min-height: 50px;
+  border-radius: 1px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.socialButton {
+  display: grid;
+  grid-template-columns: 78px 1fr 18px;
+  align-items: center;
+  border: 1px solid #293134;
+  background: #090c0d;
+  color: #dce3e0;
+  padding: 0 13px;
+  text-align: left;
+}
+
+.socialButton:hover,
+.secondary:hover {
+  border-color: #566164;
+}
+
+.socialButton span {
+  color: #657174;
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.socialButton strong {
+  font-size: 11px;
+}
+
+.socialButton b {
+  color: #515c5f;
+  font-weight: 500;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 23px 0;
+  color: #4b5558;
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #202629;
+}
+
+.form {
+  display: grid;
+  gap: 13px;
+}
+
+.form label {
+  display: grid;
+  gap: 7px;
+  color: #788386;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.form input {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #293134;
+  border-radius: 1px;
+  outline: none;
+  background: #080b0c;
+  color: #f4f7f5;
+  padding: 0 13px;
+}
+
+.form input:focus {
+  border-color: #6f8f4e;
+  box-shadow: 0 0 0 3px rgba(181,255,99,.05);
+}
+
+.form input::placeholder {
+  color: #414a4d;
+}
+
+.primary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #b5ff63;
+  background: #b5ff63;
+  color: #091006;
+  padding: 0 15px;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.secondary {
+  border: 1px solid #30383b;
+  background: transparent;
+  color: #d8dfdd;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.primary:disabled,
+.secondary:disabled,
+.socialButton:disabled {
+  cursor: wait;
+  opacity: .55;
+}
+
+.links {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.links a,
+.inlineLink {
+  color: #839093;
+  text-decoration: none;
+  font-size: 10px;
+}
+
+.links a:hover,
+.inlineLink:hover {
+  color: #b5ff63;
+}
+
+.message,
+.error {
+  margin: 15px 0 0;
+  padding: 11px 12px;
+  border: 1px solid #30383b;
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.message {
+  border-color: #38452f;
+  background: rgba(181,255,99,.035);
+  color: #c6d4bc;
+}
+
+.error {
+  border-color: #563033;
+  background: rgba(255,100,100,.035);
+  color: #ff9d9d;
+}
+
+.accountShell {
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
+    radial-gradient(circle at 84% 5%, rgba(181,255,99,.06), transparent 30%),
+    #07090a;
+  background-size: 64px 64px, 64px 64px, auto, auto;
+  color: #f4f7f5;
+  padding: 24px;
+}
+
+.accountWrap {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.accountNav {
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #202629;
+}
+
+.navLinks {
+  display: flex;
+  gap: 22px;
+}
+
+.navLinks a,
+.navLinks button {
+  border: 0;
+  background: transparent;
+  color: #8b9699;
+  text-decoration: none;
+  font: inherit;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.accountHero {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 50px;
+  align-items: end;
+  padding: 72px 0 44px;
+}
+
+.accountHero h1 {
+  margin: 16px 0 0;
+  font-size: clamp(56px, 8vw, 98px);
+  line-height: .88;
+  letter-spacing: -.06em;
+  text-transform: uppercase;
+}
+
+.identityCard,
+.accountCard {
+  border: 1px solid #222a2d;
+  background: rgba(255,255,255,.016);
+}
+
+.identityCard {
+  padding: 18px;
+}
+
+.identityCard span,
+.accountCard > span {
+  color: #626d70;
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.identityCard strong {
+  display: block;
+  margin-top: 28px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.identityCard small {
+  display: block;
+  margin-top: 7px;
+  color: #6f7a7d;
+}
+
+.accountGrid {
+  display: grid;
+  grid-template-columns: 1.25fr .75fr;
+  gap: 12px;
+  padding-top: 18px;
+}
+
+.accountCard {
+  padding: 20px;
+}
+
+.accountCard h2 {
+  margin: 9px 0 0;
+  font-size: 23px;
+  text-transform: uppercase;
+}
+
+.accountCard p {
+  color: #758083;
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.accountCard .form {
+  margin-top: 24px;
+}
+
+.actionList {
+  display: grid;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.actionLink {
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #293134;
+  padding: 0 13px;
+  color: #d8dfdd;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.actionLink:hover {
+  border-color: #596367;
+}
+
+.operatorLink {
+  border-color: #51643a;
+  color: #b5ff63;
+}
+
+@media (max-width: 860px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .brandArea {
+    min-height: 350px;
+    border-right: 0;
+    border-bottom: 1px solid #202629;
+  }
+
+  .statement {
+    padding: 60px 0 20px;
+  }
+
+  .statement h1 {
+    font-size: clamp(58px, 17vw, 100px);
+  }
+
+  .panel {
+    padding: 50px 22px 70px;
+  }
+
+  .accountHero,
+  .accountGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .brandArea {
+    min-height: 300px;
+    padding: 18px 18px 28px;
+  }
+
+  .word {
+    display: none;
+  }
+
+  .statement h1 {
+    font-size: 18vw;
+  }
+
+  .panel {
+    padding: 38px 16px 60px;
+  }
+
+  .links {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .accountShell {
+    padding: 12px;
+  }
+
+  .navLinks {
+    gap: 10px;
+  }
+}

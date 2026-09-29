@@ -45,7 +45,7 @@ export default function Home() {
         <div className="navLinks">
           <a href="/tournament/riftcore-2026-10-13">Tournament</a>
           <a href="/register">Register</a>
-          <a className="navOps" href="/ops/login">Operator access</a>
+          <a className="navOps" href="/login">Sign in</a>
         </div>
       </nav>
 
@@ -173,7 +173,7 @@ export default function Home() {
             operators review teams, verify rosters and control check-in from a
             dedicated workspace.
           </p>
-          <a className="textLink" href="/ops/login">
+          <a className="textLink" href="/ops">
             Enter operator console <span>→</span>
           </a>
         </div>
