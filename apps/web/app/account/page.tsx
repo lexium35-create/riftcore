@@ -19,7 +19,7 @@ type Operator = {
 export default function AccountPage() {
   const router = useRouter();
   const supabase = useMemo(() => getRiftcoreBrowserSupabase(), []);
-  const [email, setEmail] = useState("");
+  const [identityLabel, setIdentityLabel] = useState("");
   const [provider, setProvider] = useState("");
   const [profile, setProfile] = useState<Profile | null>(null);
   const [operator, setOperator] = useState<Operator | null>(null);
@@ -36,22 +36,48 @@ export default function AccountPage() {
         return;
       }
 
-      setEmail(session.user.email ?? "");
-      setProvider(
-        String(session.user.app_metadata.provider ?? session.user.identities?.[0]?.provider ?? "email"),
+      const providerName = String(
+        session.user.app_metadata.provider ??
+          session.user.identities?.[0]?.provider ??
+          "email",
+      );
+
+      const metadata = session.user.user_metadata ?? {};
+      const telegramHandle = metadata.preferred_username
+        ? `@${String(metadata.preferred_username)}`
+        : "";
+      const fallbackName = String(
+        metadata.display_name ??
+          metadata.full_name ??
+          metadata.name ??
+          telegramHandle ??
+          "",
+      );
+
+      setProvider(providerName);
+      setIdentityLabel(
+        session.user.email ??
+          (providerName === "custom:telegram"
+            ? telegramHandle || fallbackName || "Telegram identity"
+            : fallbackName || "Riftcore identity"),
       );
 
       const [{ data: profileData }, { data: operatorData }] = await Promise.all([
-        supabase.from("user_profiles").select("user_id,display_name,created_at").eq("user_id", session.user.id).maybeSingle(),
+        supabase
+          .from("user_profiles")
+          .select("user_id,display_name,created_at")
+          .eq("user_id", session.user.id)
+          .maybeSingle(),
         supabase.rpc("get_my_operator_profile"),
       ]);
 
       const p = profileData as Profile | null;
       setProfile(p);
-      setDisplayName(p?.display_name ?? String(session.user.user_metadata.display_name ?? session.user.user_metadata.full_name ?? ""));
+      setDisplayName(p?.display_name ?? fallbackName);
       setOperator(((operatorData ?? []) as Operator[])[0] ?? null);
       setLoading(false);
     }
+
     void load();
   }, [router, supabase]);
 
@@ -59,8 +85,12 @@ export default function AccountPage() {
     event.preventDefault();
     setSaving(true);
     setMessage(null);
+
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return;
+    if (!session) {
+      router.replace("/login?next=/account");
+      return;
+    }
 
     const { error } = await supabase.from("user_profiles").upsert({
       user_id: session.user.id,
@@ -69,6 +99,7 @@ export default function AccountPage() {
 
     if (error) setMessage(error.message);
     else setMessage("Profile updated.");
+
     setSaving(false);
   }
 
@@ -78,14 +109,24 @@ export default function AccountPage() {
   }
 
   if (loading) {
-    return <main className={styles.accountShell}><div className={styles.accountWrap}><p className={styles.kicker}>RIFTCORE / ACCOUNT</p><h1>Loading identity…</h1></div></main>;
+    return (
+      <main className={styles.accountShell}>
+        <div className={styles.accountWrap}>
+          <p className={styles.kicker}>RIFTCORE / ACCOUNT</p>
+          <h1>Loading identity…</h1>
+        </div>
+      </main>
+    );
   }
 
   return (
     <main className={styles.accountShell}>
       <div className={styles.accountWrap}>
         <nav className={styles.accountNav}>
-          <a className={styles.brand} href="/"><span className={styles.mark}>R//C</span><span className={styles.word}>Riftcore</span></a>
+          <a className={styles.brand} href="/">
+            <span className={styles.mark}>R//C</span>
+            <span className={styles.word}>Riftcore</span>
+          </a>
           <div className={styles.navLinks}>
             <a href="/tournament/riftcore-2026-10-13">Tournament</a>
             <a href="/register">Register</a>
@@ -98,10 +139,14 @@ export default function AccountPage() {
             <span className={styles.kicker}>RIFTCORE / USER ACCOUNT</span>
             <h1>{displayName || "Your identity"}</h1>
           </div>
+
           <aside className={styles.identityCard}>
             <span>AUTHENTICATED AS</span>
-            <strong>{email}</strong>
-            <small>{provider.toUpperCase()} · {operator ? operator.role.toUpperCase() : "USER"}</small>
+            <strong>{identityLabel}</strong>
+            <small>
+              {provider === "custom:telegram" ? "TELEGRAM" : provider.toUpperCase()} ·{" "}
+              {operator ? operator.role.toUpperCase() : "USER"}
+            </small>
           </aside>
         </section>
 
@@ -109,7 +154,11 @@ export default function AccountPage() {
           <article className={styles.accountCard}>
             <span>PROFILE / 01</span>
             <h2>Public identity</h2>
-            <p>Your display name is used across Riftcore account surfaces. Tournament roster names remain separate in-game identities.</p>
+            <p>
+              Your display name is used across Riftcore account surfaces.
+              Telegram accounts do not require an email address.
+            </p>
+
             <form className={styles.form} onSubmit={saveProfile}>
               <label>
                 Display name
@@ -120,23 +169,40 @@ export default function AccountPage() {
                   onChange={(event) => setDisplayName(event.target.value)}
                 />
               </label>
+
               <button className={styles.primary} disabled={saving} type="submit">
                 <span>{saving ? "Saving…" : "Save profile"}</span>
                 <span>→</span>
               </button>
             </form>
+
             {message && <p className={styles.message}>{message}</p>}
           </article>
 
           <aside className={styles.accountCard}>
             <span>QUICK ACTIONS / 02</span>
             <h2>Riftcore access</h2>
+
             <div className={styles.actionList}>
-              <a className={styles.actionLink} href="/register"><span>Register a team</span><b>→</b></a>
-              <a className={styles.actionLink} href="/tournament/riftcore-2026-10-13"><span>View tournament</span><b>→</b></a>
+              <a className={styles.actionLink} href="/register">
+                <span>Register a team</span>
+                <b>→</b>
+              </a>
+              <a
+                className={styles.actionLink}
+                href="/tournament/riftcore-2026-10-13"
+              >
+                <span>View tournament</span>
+                <b>→</b>
+              </a>
+
               {operator && (
-                <a className={`${styles.actionLink} ${styles.operatorLink}`} href="/ops">
-                  <span>Open operator console</span><b>→</b>
+                <a
+                  className={`${styles.actionLink} ${styles.operatorLink}`}
+                  href="/ops"
+                >
+                  <span>Open operator console</span>
+                  <b>→</b>
                 </a>
               )}
             </div>
