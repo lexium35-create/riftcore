@@ -38,16 +38,31 @@ export async function POST(request: Request) {
 
   await sendRiftcoreMail({
     to: [email],
-    subject: "Welcome to Riftcore",
-    eyebrow: "RIFTCORE / ACCOUNT",
+    subject: `Welcome to Riftcore, ${name}`,
+    eyebrow: "RIFTCORE / ACCOUNT CREATED",
     title: "Your Riftcore identity is live.",
+    intro: `Welcome, ${name}. Your account is now the identity behind your tournament activity.`,
     lines: [
-      `Welcome, ${name}.`,
-      "Your account can follow tournament registrations, receive status updates and bind additional sign-in platforms from the profile page.",
+      "Registrations you submit will stay attached to this account across future tournaments.",
+      "You can also bind Telegram, Google, Discord and GitHub so multiple sign-in methods resolve to the same Riftcore identity.",
+    ],
+    facts: [
+      { label: "Account", value: "Active" },
+      { label: "Tournament history", value: "Enabled" },
+      { label: "Bound platforms", value: "Available in profile" },
+    ],
+    nextSteps: [
+      "Set the display name you want shown on Riftcore.",
+      "Bind any other platforms you want to use for sign-in.",
+      "Join the official community so match-day updates do not get missed.",
     ],
     cta: {
       label: "Open your profile",
       href: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://riftcore-five.vercel.app"}/account`,
+    },
+    secondaryCta: {
+      label: "Join the community",
+      href: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://riftcore-five.vercel.app"}/community`,
     },
   });
 

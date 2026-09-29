@@ -177,6 +177,7 @@ export default function AccountPage() {
           <div className={styles.navLinks}>
             <a href="/tournament/riftcore-2026-10-13">Tournament</a>
             <a href="/register">Register</a>
+            <a href="/community">Community</a>
             <button onClick={() => void signOut()}>Sign out</button>
           </div>
         </nav>
@@ -214,6 +215,7 @@ export default function AccountPage() {
             <div className={styles.actionList}>
               <a className={styles.actionLink} href="/register"><span>Register a team</span><b>→</b></a>
               <a className={styles.actionLink} href="/tournament/riftcore-2026-10-13"><span>View current tournament</span><b>→</b></a>
+              <a className={styles.actionLink} href="/community"><span>Open community hub</span><b>→</b></a>
               {operator && <a className={`${styles.actionLink} ${styles.operatorLink}`} href="/ops"><span>Open operator console</span><b>→</b></a>}
             </div>
           </aside>

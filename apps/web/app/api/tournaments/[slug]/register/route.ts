@@ -56,17 +56,32 @@ export async function POST(
 
     await sendRiftcoreMail({
       to: recipients,
-      subject: `Registration received — ${validation.value.teamName}`,
-      eyebrow: "RIFTCORE / REGISTRATION",
-      title: "Team entry received.",
+      subject: `Roster received — ${validation.value.teamName} / ${tournament.name}`,
+      eyebrow: "RIFTCORE / TEAM REGISTRATION",
+      title: "We have your roster.",
+      intro: `${validation.value.teamName} is now in the review queue for ${tournament.name}.`,
       lines: [
-        `${validation.value.teamName} has been submitted for ${tournament.name}.`,
-        `Reference: ${registration.id}`,
-        "Status: pending staff verification. You will receive another email when the registration is accepted, rejected or otherwise changed.",
+        "This is not an acceptance yet. Riftcore staff will verify the roster and tournament details before the entry becomes official.",
       ],
+      facts: [
+        { label: "Reference", value: registration.id },
+        { label: "Status", value: "Pending review" },
+        { label: "Roster", value: `${validation.value.players.filter((player) => player.rosterRole === "starter").length} starters + ${validation.value.players.filter((player) => player.rosterRole === "substitute").length} substitute` },
+        { label: "Captain email", value: validation.value.captainEmail },
+      ],
+      nextSteps: [
+        "Keep the captain email reachable while staff review the entry.",
+        "Watch your Riftcore profile for the registration status.",
+        "Join the official community for tournament announcements and match-day coordination.",
+      ],
+      status: "Pending",
       cta: {
-        label: "Open Riftcore account",
+        label: "Track registration",
         href: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://riftcore-five.vercel.app"}/account`,
+      },
+      secondaryCta: {
+        label: "Open community",
+        href: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://riftcore-five.vercel.app"}/community`,
       },
     }).catch((error) => console.error("[registration-mail]", error));
 

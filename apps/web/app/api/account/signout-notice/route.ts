@@ -23,16 +23,25 @@ export async function POST(request: Request) {
 
   await sendRiftcoreMail({
     to: [email],
-    subject: "Signed out of Riftcore",
+    subject: "Security notice — a Riftcore session was signed out",
     eyebrow: "RIFTCORE / SECURITY",
-    title: "Session signed out.",
+    title: "Session closed.",
+    intro: "A signed-in Riftcore session for your account was closed.",
     lines: [
-      "A Riftcore session for your account was signed out.",
-      "If this was you, no action is needed. If it was unexpected, sign in again and review your linked platforms.",
+      "If you signed out yourself, there is nothing else to do.",
+      "If this was unexpected, sign in again and review the platforms bound to your account.",
+    ],
+    facts: [
+      { label: "Event", value: "Sign out" },
+      { label: "Account status", value: "Still active" },
+    ],
+    nextSteps: [
+      "Ignore this email if you signed out intentionally.",
+      "If you did not, sign back in and review Bound Platforms in your profile.",
     ],
     cta: {
-      label: "Open Riftcore",
-      href: process.env.NEXT_PUBLIC_APP_URL ?? "https://riftcore-five.vercel.app",
+      label: "Review account",
+      href: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://riftcore-five.vercel.app"}/account`,
     },
   });
 

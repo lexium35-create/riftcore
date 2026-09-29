@@ -28,15 +28,42 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
   if (target) {
     await sendRiftcoreMail({
       to: [target.captain_email, ...(target.player_emails ?? [])],
-      subject: `${body.checkedIn ? "Team checked in" : "Check-in reverted"} — ${target.team_name}`,
+      subject: `${body.checkedIn ? "Check-in confirmed" : "Check-in reverted"} — ${target.team_name}`,
       eyebrow: "RIFTCORE / MATCH OPS",
-      title: body.checkedIn ? "Check-in confirmed." : "Check-in reverted.",
+      title: body.checkedIn ? "You're checked in." : "Check-in reverted.",
+      intro: body.checkedIn
+        ? "Riftcore now has your team marked ready for tournament operations."
+        : "Tournament staff reverted the team's check-in state.",
       lines: [
         `${target.team_name} · ${target.tournament_name}`,
         body.checkedIn
-          ? "Your verified team is marked ready for tournament operations."
-          : "Tournament staff reverted this team's check-in state.",
+          ? "Keep the registered roster available and watch for lobby or referee instructions."
+          : "The team is no longer marked ready. Check the official community or tournament page for the next instruction.",
       ],
+      facts: [
+        { label: "Team", value: target.team_name },
+        { label: "Tournament", value: target.tournament_name },
+        { label: "Check-in", value: body.checkedIn ? "Confirmed" : "Not checked in" },
+      ],
+      nextSteps: body.checkedIn
+        ? [
+            "Keep the full roster available.",
+            "Watch Discord/Telegram for match-day coordination.",
+            "Follow referee instructions once a lobby is assigned.",
+          ]
+        : [
+            "Check why the state was reverted.",
+            "Contact tournament staff through the official community if needed.",
+          ],
+      status: body.checkedIn ? "Checked in" : "Reverted",
+      cta: {
+        label: "Open tournament",
+        href: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://riftcore-five.vercel.app"}/tournament/riftcore-2026-10-13`,
+      },
+      secondaryCta: {
+        label: "Open community",
+        href: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://riftcore-five.vercel.app"}/community`,
+      },
     }).catch((mailError) => console.error("[checkin-mail]", mailError));
   }
 

@@ -7,11 +7,56 @@ function bearer(request: Request): string | null {
   return header.slice(7).trim();
 }
 
-const copy: Record<string, { subject: string; title: string; line: string }> = {
-  pending: { subject: "Registration moved to pending review", title: "Back in review.", line: "Staff moved this registration back to pending review." },
-  verified: { subject: "Registration accepted", title: "Team accepted.", line: "Your roster has been verified and accepted for this tournament." },
-  rejected: { subject: "Registration rejected", title: "Registration rejected.", line: "Staff rejected this registration. Review your details and contact tournament operations if you need clarification." },
-  withdrawn: { subject: "Registration withdrawn", title: "Registration withdrawn.", line: "This team registration has been withdrawn from the tournament." },
+const copy: Record<string, {
+  subject: string;
+  title: string;
+  intro: string;
+  line: string;
+  nextSteps: string[];
+}> = {
+  pending: {
+    subject: "Roster is back in review",
+    title: "Back in review.",
+    intro: "Tournament staff moved this registration back into the review queue.",
+    line: "Nothing has been rejected yet. Staff are checking the entry again before making the next decision.",
+    nextSteps: [
+      "Keep the captain email reachable.",
+      "Watch your Riftcore profile for the next status change.",
+      "Use the official community if staff ask the team to clarify something.",
+    ],
+  },
+  verified: {
+    subject: "You're in — registration accepted",
+    title: "Team accepted.",
+    intro: "Your roster passed staff verification and the team is accepted for this tournament.",
+    line: "The registration is now official. Match-day instructions and check-in updates will follow through Riftcore and the official community channels.",
+    nextSteps: [
+      "Make sure the registered roster stays unchanged unless staff approve a change.",
+      "Watch for check-in timing and match-day instructions.",
+      "Join the official community so your captain does not miss operational updates.",
+    ],
+  },
+  rejected: {
+    subject: "Action needed — registration not accepted",
+    title: "Registration needs attention.",
+    intro: "Staff could not accept this team entry in its current form.",
+    line: "This can happen when roster details, eligibility or tournament requirements do not match what staff need. Use the official community if you need clarification before submitting again.",
+    nextSteps: [
+      "Review the roster and contact information for mistakes.",
+      "Check tournament requirements and any staff instructions.",
+      "Contact Riftcore through the official community if the reason is unclear.",
+    ],
+  },
+  withdrawn: {
+    subject: "Registration withdrawn",
+    title: "Entry withdrawn.",
+    intro: "This team is no longer entered in the tournament.",
+    line: "The withdrawn registration remains in account history, but it will not proceed into tournament operations.",
+    nextSteps: [
+      "No action is required if the withdrawal was intentional.",
+      "Contact staff through the official community if this was unexpected.",
+    ],
+  },
 };
 
 export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
@@ -42,14 +87,25 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
       subject: `${message.subject} — ${target.team_name}`,
       eyebrow: "RIFTCORE / REGISTRATION STATUS",
       title: message.title,
+      intro: message.intro,
       lines: [
         `${target.team_name} · ${target.tournament_name}`,
         message.line,
-        `Current status: ${body.status.toUpperCase()}`,
       ],
+      facts: [
+        { label: "Team", value: target.team_name },
+        { label: "Tournament", value: target.tournament_name },
+        { label: "Current status", value: body.status.toUpperCase() },
+      ],
+      nextSteps: message.nextSteps,
+      status: body.status,
       cta: {
-        label: "Open account",
+        label: "Open registration",
         href: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://riftcore-five.vercel.app"}/account`,
+      },
+      secondaryCta: {
+        label: "Open community",
+        href: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://riftcore-five.vercel.app"}/community`,
       },
     }).catch((mailError) => console.error("[status-mail]", mailError));
   }

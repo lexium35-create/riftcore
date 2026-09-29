@@ -45,6 +45,7 @@ export default async function TournamentPage({
         <div className="navLinks">
           <a href="/">Home</a>
           <a href="/register">Register</a>
+          <a href="/community">Community</a>
           <AccountNavAction />
         </div>
       </nav>
@@ -153,6 +154,13 @@ export default async function TournamentPage({
                 <dd>{tournament.prizePool.total ? `₹${tournament.prizePool.total.toLocaleString("en-IN")}` : "TBD"}</dd>
               </div>
             </dl>
+          </div>
+
+          <div className="sideCard">
+            <span className="panelLabelSolo">COMMUNITY SIGNAL</span>
+            <strong>Stay connected</strong>
+            <p>Official Telegram and Discord links live in the Riftcore community hub for announcements and match-day coordination.</p>
+            <a className="textLink compactLink" href="/community">Open community →</a>
           </div>
 
           <a className="sideCta" href="/register">

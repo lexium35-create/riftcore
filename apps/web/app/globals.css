@@ -1440,3 +1440,221 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Community */
+.communitySection {
+  padding: 112px 0;
+  border-top: 1px solid var(--line);
+}
+
+.communityGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 46px;
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.communityCard {
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background:
+    linear-gradient(145deg, rgba(181,255,99,.025), transparent 38%),
+    rgba(255,255,255,.012);
+}
+
+.communityCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #687276;
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.communityCardTop i {
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+}
+
+.communityLabel {
+  margin-top: 52px;
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .15em;
+}
+
+.communityCard h2,
+.communityCard h3 {
+  margin: 12px 0 0;
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: .95;
+  letter-spacing: -.045em;
+  text-transform: uppercase;
+}
+
+.communityCard p {
+  max-width: 540px;
+  margin: 20px 0 0;
+  color: #7f8a8d;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.communityMeta {
+  margin-top: auto;
+  padding-top: 34px;
+  color: #667174;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
+.communityCard > a {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+  border-top: 1px solid var(--line);
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.communityPage {
+  padding-bottom: 90px;
+}
+
+.communityHero {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 70px;
+  align-items: end;
+  padding: 30px 0 64px;
+  border-bottom: 1px solid var(--line);
+}
+
+.communityHero p {
+  margin: 0 0 8px;
+  color: #889397;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.communityBotPanel {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 40px;
+  margin-top: 18px;
+  padding: 34px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.014);
+}
+
+.communityBotPanel h2 {
+  margin: 12px 0 0;
+  font-size: clamp(34px, 5vw, 64px);
+  line-height: .94;
+  letter-spacing: -.05em;
+  text-transform: uppercase;
+}
+
+.communityBotPanel p {
+  max-width: 700px;
+  margin: 18px 0 0;
+  color: #7d898c;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.communitySafety {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 40px;
+  margin-top: 18px;
+  padding: 22px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.communitySafety span {
+  color: #697477;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+
+.communitySafety p {
+  margin: 0;
+  color: #7b878a;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 18px;
+}
+
+.footerLinks a {
+  color: #596467;
+  text-decoration: none;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.compactLink {
+  margin-top: 18px;
+}
+
+@media (max-width: 760px) {
+  .communityGrid,
+  .communityHero {
+    grid-template-columns: 1fr;
+  }
+
+  .communityHero {
+    gap: 24px;
+  }
+
+  .communityBotPanel {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .communitySafety {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .footerLinks {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 520px) {
+  .communitySection {
+    padding: 76px 0;
+  }
+
+  .communityCard {
+    min-height: 320px;
+  }
+
+  .communityBotPanel {
+    padding: 22px 16px;
+  }
+}

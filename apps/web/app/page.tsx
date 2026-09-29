@@ -46,6 +46,7 @@ export default function Home() {
         <div className="navLinks">
           <a href="/tournament/riftcore-2026-10-13">Tournament</a>
           <a href="/register">Register</a>
+          <a href="/community">Community</a>
           <AccountNavAction />
         </div>
       </nav>
@@ -155,6 +156,41 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="communitySection">
+        <div className="sectionIntro">
+          <div>
+            <span className="sectionIndex">/ COMMUNITY</span>
+            <h2>Competition lives here.<br />The community lives everywhere.</h2>
+          </div>
+          <p>
+            Follow announcements, match-day coordination and tournament updates
+            through Riftcore&apos;s official Telegram and Discord communities.
+          </p>
+        </div>
+
+        <div className="communityGrid">
+          <article className="communityCard">
+            <div className="communityCardTop"><span>01</span><i /></div>
+            <span className="communityLabel">TELEGRAM / FAST LANE</span>
+            <h3>Riftcore Telegram</h3>
+            <p>Fast announcements, reminders, match-day pings and direct community conversation with Cypher inside the group.</p>
+            <div className="communityMeta">@Cyber_tetris_bot</div>
+            <a href="https://t.me/+2R97p2DNghQ5Njdl" target="_blank" rel="noreferrer"><span>Join Telegram</span><b>↗</b></a>
+          </article>
+
+          <article className="communityCard">
+            <div className="communityCardTop"><span>02</span><i /></div>
+            <span className="communityLabel">DISCORD / OPERATIONS</span>
+            <h3>Riftcore Discord</h3>
+            <p>Captain desk, match coordination, results, disputes, support, voice rooms and the structured side of tournament operations.</p>
+            <div className="communityMeta">Official Riftcore server</div>
+            <a href="https://discord.gg/U4TbBEfR2Q" target="_blank" rel="noreferrer"><span>Join Discord</span><b>↗</b></a>
+          </article>
+        </div>
+
+        <a className="textLink" href="/community">Open community hub <span>→</span></a>
+      </section>
+
       <section className="commandSection">
         <div className="commandVisual" aria-hidden="true">
           <span className="crosshair crosshairA">+</span>
@@ -185,7 +221,11 @@ export default function Home() {
           <span className="brandMark">R//C</span>
           <strong>Riftcore</strong>
         </div>
-        <p>Competitive infrastructure / Assam, India / 2026</p>
+        <div className="footerLinks">
+          <a href="/community">Community</a>
+          <a href="https://t.me/+2R97p2DNghQ5Njdl" target="_blank" rel="noreferrer">Telegram</a>
+          <a href="https://discord.gg/U4TbBEfR2Q" target="_blank" rel="noreferrer">Discord</a>
+        </div>
       </footer>
     </main>
   );
