@@ -14,7 +14,7 @@ function safeNext(value: string | null): string {
 
 function friendlyAuthError(message: string): string {
   if (message.toLowerCase().includes("user email from external provider")) {
-    return "Telegram sign-in reached Riftcore, but the Telegram identity provider is currently configured to require an email. Telegram does not provide email addresses. Enable Email optional for custom:telegram in Supabase, then retry.";
+    return "Telegram sign-in reached Riftcore but the provider callback could not complete. Retry from the login page; if it persists, tournament support can trace the Auth request.";
   }
 
   return message;
@@ -65,6 +65,14 @@ export default function AuthCallbackClient() {
           }
           return;
         }
+      }
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        await fetch("/api/account/welcome", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        }).catch(() => null);
       }
 
       if (!cancelled) {

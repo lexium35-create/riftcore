@@ -2,7 +2,7 @@ import type {
   RegistrationStatus,
   TeamRegistrationInput,
 } from "@riftcore/tournament-core";
-import { getRiftcoreSupabase } from "@/lib/supabase";
+import { getRiftcoreSupabaseForToken } from "@/lib/supabase";
 
 export interface StoredRegistration {
   id: string;
@@ -21,26 +21,23 @@ type RegistrationRpcRow = {
 export async function saveRegistration(
   tournamentSlug: string,
   team: TeamRegistrationInput,
+  accessToken: string,
 ): Promise<StoredRegistration> {
-  const supabase = getRiftcoreSupabase();
+  const supabase = getRiftcoreSupabaseForToken(accessToken);
 
   const { data, error } = await supabase.rpc("submit_team_registration", {
     p_tournament_slug: tournamentSlug,
     p_team_name: team.teamName,
     p_team_tag: team.teamTag ?? null,
     p_captain_contact: team.captainContact,
+    p_captain_email: team.captainEmail,
     p_players: team.players,
   });
 
-  if (error) {
-    throw new Error(error.message);
-  }
+  if (error) throw new Error(error.message);
 
   const record = (data as RegistrationRpcRow[] | null)?.[0];
-
-  if (!record) {
-    throw new Error("Supabase did not return a registration record.");
-  }
+  if (!record) throw new Error("Supabase did not return a registration record.");
 
   return {
     id: record.registration_id,

@@ -1166,6 +1166,10 @@ a {
     padding: 7px 9px;
   }
 
+  .accountNavCopy strong {
+    max-width: 92px;
+  }
+
   .heroStage {
     padding: 58px 0 48px;
     gap: 48px;
@@ -1351,5 +1355,88 @@ a {
 
   .submitButton {
     width: 100%;
+  }
+}
+
+.accountNavAction {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 8px 4px 4px;
+  border: 1px solid #30383b;
+  color: var(--text) !important;
+  text-decoration: none;
+}
+
+.accountNavAvatar {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #4b575a;
+  object-fit: cover;
+  background: #0a0d0e;
+}
+
+.accountNavInitial {
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.accountNavCopy {
+  min-width: 0;
+  display: grid;
+  gap: 1px;
+}
+
+.accountNavCopy small {
+  color: #596467;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.accountNavCopy strong {
+  max-width: 140px;
+  overflow: hidden;
+  color: #dce2df;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contactGrid {
+  padding-bottom: 20px;
+}
+
+.rosterHeader,
+.playerRow {
+  grid-template-columns: 115px 1.2fr 1fr .75fr 1.25fr;
+}
+
+.formResult a {
+  color: var(--accent);
+}
+
+@media (max-width: 760px) {
+  .accountNavCopy {
+    display: none;
+  }
+
+  .accountNavAction {
+    padding: 4px;
+  }
+
+  .rosterHeader,
+  .playerRow {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .playerRow {
+    grid-template-columns: 1fr;
   }
 }

@@ -34,6 +34,7 @@ export interface Player {
   ign: string;
   mlbbId: string;
   serverId: string;
+  email?: string;
 }
 
 export interface Match {
@@ -66,6 +67,7 @@ export interface RegistrationPlayerInput {
   ign: string;
   mlbbId: string;
   serverId: string;
+  email?: string;
   rosterRole: "starter" | "substitute";
   isCaptain: boolean;
 }
@@ -74,6 +76,7 @@ export interface TeamRegistrationInput {
   teamName: string;
   teamTag?: string;
   captainContact: string;
+  captainEmail: string;
   players: RegistrationPlayerInput[];
 }
 
@@ -92,6 +95,14 @@ function clean(value: string): string {
   return value.trim().replace(/\s+/g, " ");
 }
 
+function cleanEmail(value: string): string {
+  return value.trim().toLowerCase();
+}
+
+function validEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
 export function validateTeamRegistration(
   input: TeamRegistrationInput,
   options: { teamSize?: number; substituteSlots?: number } = {},
@@ -104,11 +115,13 @@ export function validateTeamRegistration(
     teamName: clean(input.teamName ?? ""),
     teamTag: input.teamTag ? clean(input.teamTag) : undefined,
     captainContact: clean(input.captainContact ?? ""),
+    captainEmail: cleanEmail(input.captainEmail ?? ""),
     players: Array.isArray(input.players)
       ? input.players.map((player) => ({
           ign: clean(player.ign ?? ""),
           mlbbId: clean(player.mlbbId ?? ""),
           serverId: clean(player.serverId ?? ""),
+          email: player.email ? cleanEmail(player.email) : undefined,
           rosterRole: player.rosterRole,
           isCaptain: Boolean(player.isCaptain),
         }))
@@ -116,100 +129,57 @@ export function validateTeamRegistration(
   };
 
   if (normalized.teamName.length < 2 || normalized.teamName.length > 40) {
-    issues.push({
-      field: "teamName",
-      message: "Team name must be between 2 and 40 characters.",
-    });
+    issues.push({ field: "teamName", message: "Team name must be between 2 and 40 characters." });
   }
 
   if (normalized.teamTag && normalized.teamTag.length > 8) {
-    issues.push({
-      field: "teamTag",
-      message: "Team tag must be 8 characters or fewer.",
-    });
+    issues.push({ field: "teamTag", message: "Team tag must be 8 characters or fewer." });
   }
 
   if (normalized.captainContact.length < 3) {
-    issues.push({
-      field: "captainContact",
-      message: "A captain contact method is required.",
-    });
+    issues.push({ field: "captainContact", message: "A captain contact method is required." });
   }
 
-  const starters = normalized.players.filter(
-    (player) => player.rosterRole === "starter",
-  );
-  const substitutes = normalized.players.filter(
-    (player) => player.rosterRole === "substitute",
-  );
+  if (!validEmail(normalized.captainEmail)) {
+    issues.push({ field: "captainEmail", message: "A valid captain email address is required." });
+  }
+
+  const starters = normalized.players.filter((player) => player.rosterRole === "starter");
+  const substitutes = normalized.players.filter((player) => player.rosterRole === "substitute");
 
   if (starters.length !== teamSize) {
-    issues.push({
-      field: "players",
-      message: `Exactly ${teamSize} starting players are required.`,
-    });
+    issues.push({ field: "players", message: `Exactly ${teamSize} starting players are required.` });
   }
 
   if (substitutes.length > substituteSlots) {
-    issues.push({
-      field: "players",
-      message: `A maximum of ${substituteSlots} substitute is allowed.`,
-    });
+    issues.push({ field: "players", message: `A maximum of ${substituteSlots} substitute is allowed.` });
   }
 
   normalized.players.forEach((player, index) => {
-    if (!player.ign) {
-      issues.push({
-        field: `players.${index}.ign`,
-        message: "IGN is required.",
-      });
-    }
-
-    if (!/^\d+$/.test(player.mlbbId)) {
-      issues.push({
-        field: `players.${index}.mlbbId`,
-        message: "MLBB account ID must contain digits only.",
-      });
-    }
-
-    if (!/^\d+$/.test(player.serverId)) {
-      issues.push({
-        field: `players.${index}.serverId`,
-        message: "Server ID must contain digits only.",
-      });
-    }
+    if (!player.ign) issues.push({ field: `players.${index}.ign`, message: "IGN is required." });
+    if (!/^\d+$/.test(player.mlbbId)) issues.push({ field: `players.${index}.mlbbId`, message: "MLBB account ID must contain digits only." });
+    if (!/^\d+$/.test(player.serverId)) issues.push({ field: `players.${index}.serverId`, message: "Server ID must contain digits only." });
+    if (player.email && !validEmail(player.email)) issues.push({ field: `players.${index}.email`, message: "Player email must be valid or left empty." });
   });
 
   const captains = normalized.players.filter((player) => player.isCaptain);
   if (captains.length !== 1) {
-    issues.push({
-      field: "captain",
-      message: "Exactly one starting player must be designated captain.",
-    });
+    issues.push({ field: "captain", message: "Exactly one starting player must be designated captain." });
   } else if (captains[0].rosterRole !== "starter") {
-    issues.push({
-      field: "captain",
-      message: "The captain must be one of the five starting players.",
-    });
+    issues.push({ field: "captain", message: "The captain must be one of the five starting players." });
   }
 
   const identities = new Set<string>();
   normalized.players.forEach((player, index) => {
     if (!player.mlbbId || !player.serverId) return;
-
     const identity = `${player.mlbbId}:${player.serverId}`;
     if (identities.has(identity)) {
-      issues.push({
-        field: `players.${index}`,
-        message: "The same MLBB account cannot appear twice on a roster.",
-      });
+      issues.push({ field: `players.${index}`, message: "The same MLBB account cannot appear twice on a roster." });
     }
     identities.add(identity);
   });
 
-  return issues.length === 0
-    ? { ok: true, issues, value: normalized }
-    : { ok: false, issues };
+  return issues.length === 0 ? { ok: true, issues, value: normalized } : { ok: false, issues };
 }
 
 const matchTransitions: Record<MatchStatus, MatchStatus[]> = {
@@ -221,18 +191,10 @@ const matchTransitions: Record<MatchStatus, MatchStatus[]> = {
   final: [],
 };
 
-export function canTransitionMatch(
-  from: MatchStatus,
-  to: MatchStatus,
-): boolean {
+export function canTransitionMatch(from: MatchStatus, to: MatchStatus): boolean {
   return matchTransitions[from].includes(to);
 }
 
-export function assertMatchTransition(
-  from: MatchStatus,
-  to: MatchStatus,
-): void {
-  if (!canTransitionMatch(from, to)) {
-    throw new Error(`Invalid match transition: ${from} -> ${to}`);
-  }
+export function assertMatchTransition(from: MatchStatus, to: MatchStatus): void {
+  if (!canTransitionMatch(from, to)) throw new Error(`Invalid match transition: ${from} -> ${to}`);
 }

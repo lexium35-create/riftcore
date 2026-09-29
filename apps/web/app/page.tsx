@@ -1,3 +1,4 @@
+import AccountNavAction from "@/components/AccountNavAction";
 const systems = [
   {
     code: "01",
@@ -45,7 +46,7 @@ export default function Home() {
         <div className="navLinks">
           <a href="/tournament/riftcore-2026-10-13">Tournament</a>
           <a href="/register">Register</a>
-          <a className="navOps" href="/login">Sign in</a>
+          <AccountNavAction />
         </div>
       </nav>
 

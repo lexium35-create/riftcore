@@ -143,13 +143,22 @@ export default function OpsPage() {
     setBusyKey(`${registrationId}:status`);
     setError(null);
 
-    const { error: mutationError } = await supabase.rpc(
-      "set_registration_status",
-      {
-        p_registration_id: registrationId,
-        p_status: status,
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      router.replace("/login?next=/ops");
+      return;
+    }
+
+    const response = await fetch(`/api/ops/registrations/${registrationId}/status`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.access_token}`,
       },
-    );
+      body: JSON.stringify({ status }),
+    });
+    const payload = await response.json().catch(() => ({}));
+    const mutationError = response.ok ? null : new Error(payload.error ?? "Unable to change registration status.");
 
     if (mutationError) {
       setError(mutationError.message);
@@ -177,13 +186,22 @@ export default function OpsPage() {
     setBusyKey(`${registrationId}:checkin`);
     setError(null);
 
-    const { error: mutationError } = await supabase.rpc(
-      "set_registration_check_in",
-      {
-        p_registration_id: registrationId,
-        p_checked_in: checkedIn,
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      router.replace("/login?next=/ops");
+      return;
+    }
+
+    const response = await fetch(`/api/ops/registrations/${registrationId}/check-in`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.access_token}`,
       },
-    );
+      body: JSON.stringify({ checkedIn }),
+    });
+    const payload = await response.json().catch(() => ({}));
+    const mutationError = response.ok ? null : new Error(payload.error ?? "Unable to change check-in state.");
 
     if (mutationError) {
       setError(mutationError.message);

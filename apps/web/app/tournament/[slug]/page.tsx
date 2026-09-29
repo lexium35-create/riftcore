@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getTournamentBySlug } from "@/lib/tournaments";
+import AccountNavAction from "@/components/AccountNavAction";
 
 function displayValue(value: string | number | null | undefined, fallback = "TBD") {
   if (value === null || value === undefined || value === "") return fallback;
@@ -39,7 +40,7 @@ export default async function TournamentPage({
         <div className="navLinks">
           <a href="/">Home</a>
           <a href="/register">Register</a>
-          <a className="navOps" href="/login">Sign in</a>
+          <AccountNavAction />
         </div>
       </nav>
 

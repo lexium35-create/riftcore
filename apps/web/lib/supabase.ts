@@ -31,3 +31,24 @@ export function getRiftcoreSupabase(): SupabaseClient {
 
   return client;
 }
+
+export function getRiftcoreSupabaseForToken(accessToken: string): SupabaseClient {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? DEFAULT_SUPABASE_URL;
+  const publishableKey =
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
+    DEFAULT_SUPABASE_PUBLISHABLE_KEY;
+
+  return createClient(url, publishableKey, {
+    auth: {
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+      persistSession: false,
+    },
+    global: {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "X-Client-Info": "riftcore-web-authenticated",
+      },
+    },
+  });
+}
