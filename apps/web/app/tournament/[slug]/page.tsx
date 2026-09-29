@@ -17,10 +17,15 @@ export default async function TournamentPage({
 
   if (!tournament) notFound();
 
-  const date = new Date(`${tournament.date}T00:00:00+05:30`);
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = date.toLocaleString("en-US", { month: "short" }).toUpperCase();
-  const year = date.getFullYear();
+  const [yearText, monthText, dayText] = tournament.date.split("-");
+  const day = dayText.padStart(2, "0");
+  const month = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    timeZone: "UTC",
+  })
+    .format(new Date(Date.UTC(Number(yearText), Number(monthText) - 1, 1)))
+    .toUpperCase();
+  const year = Number(yearText);
 
   const phases = [
     ["01", "Registration", "Team details, roster and captain identity enter the system."],
