@@ -61,8 +61,8 @@ export default async function TournamentPage({
           </div>
           <h1 className="displayTitle">{tournament.name}</h1>
           <p className="heroLede">
-            Official Riftcore operation brief. Registration feeds directly into
-            verification, check-in and the staff control room.
+            Register your roster, follow the growing prize pool, and return here
+            on match day for live pairings, standings, announcements and results.
           </p>
           <div className="heroActions">
             <a className="ctaPrimary" href="/register">
@@ -89,7 +89,7 @@ export default async function TournamentPage({
         <article>
           <span>STATUS</span>
           <strong>{tournament.status}</strong>
-          <small>Current lifecycle state</small>
+          <small>Registration → match day → results</small>
         </article>
         <article>
           <span>ROSTER</span>
@@ -99,7 +99,7 @@ export default async function TournamentPage({
         <article>
           <span>FORMAT</span>
           <strong>{displayValue(tournament.format)}</strong>
-          <small>Published before match day</small>
+          <small>Fast format based on checked-in field</small>
         </article>
         <article>
           <span>MAX TEAMS</span>
