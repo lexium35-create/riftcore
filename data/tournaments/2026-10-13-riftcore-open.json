@@ -37,7 +37,11 @@
   },
   "prizePool": {
     "currency": "INR",
-    "total": null,
+    "total": 2000,
+    "base": 2000,
+    "joinFee": 250,
+    "registrationFeesToPrizePool": true,
+    "donationsEnabled": true,
     "distribution": []
   },
   "links": {

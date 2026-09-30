@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getTournamentBySlug } from "@/lib/tournaments";
 import AccountNavAction from "@/components/AccountNavAction";
 import TournamentLiveBoard from "@/components/TournamentLiveBoard";
+import TournamentPrizePool from "@/components/TournamentPrizePool";
 
 function displayValue(value: string | number | null | undefined, fallback = "TBD") {
   if (value === null || value === undefined || value === "") return fallback;
@@ -107,6 +108,8 @@ export default async function TournamentPage({
         </article>
       </section>
 
+      <TournamentPrizePool slug={slug} />
+
       <TournamentLiveBoard slug={slug} />
 
       <section className="tournamentBody">
@@ -131,6 +134,15 @@ export default async function TournamentPage({
         </div>
 
         <aside className="tournamentSide">
+          <div className="sideCard">
+            <span className="panelLabelSolo">ENTRY + PRIZE</span>
+            <strong>₹250 / TEAM</strong>
+            <p>
+              The prize pool starts at ₹2,000. Every active registration adds the
+              full ₹250 entry fee, and verified donations are added in full.
+            </p>
+          </div>
+
           <div className="sideCard">
             <span className="panelLabelSolo">REGISTRATION WINDOW</span>
             <strong>{tournament.registration.opensAt ? "Scheduled" : "Open configuration"}</strong>

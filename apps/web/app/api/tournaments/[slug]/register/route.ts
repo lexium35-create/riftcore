@@ -68,9 +68,12 @@ export async function POST(
         { label: "Status", value: "Pending review" },
         { label: "Roster", value: `${validation.value.players.filter((player) => player.rosterRole === "starter").length} starters + ${validation.value.players.filter((player) => player.rosterRole === "substitute").length} substitute` },
         { label: "Captain email", value: validation.value.captainEmail },
+        { label: "Team entry", value: "₹250" },
+        { label: "Prize pool contribution", value: "₹250 added while this registration is active" },
       ],
       nextSteps: [
         "Keep the captain email reachable while staff review the entry.",
+        "Tournament #001 has a ₹250 team entry fee; active entries increase the public prize pool by the full amount.",
         "Watch your Riftcore profile for the registration status.",
         "Join the official community for tournament announcements and match-day coordination.",
       ],

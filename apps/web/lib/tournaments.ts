@@ -31,6 +31,10 @@ export interface TournamentConfig extends Tournament {
   prizePool: {
     currency: string;
     total: number | null;
+    base?: number;
+    joinFee?: number;
+    registrationFeesToPrizePool?: boolean;
+    donationsEnabled?: boolean;
     distribution: unknown[];
   };
   links: Record<string, string | null>;

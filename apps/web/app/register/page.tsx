@@ -128,8 +128,9 @@ export default function RegisterPage() {
           <h1 className="displayTitle">Enter the rift.</h1>
         </div>
         <p>
-          Submit five starters and one optional substitute. Captain email is required;
-          player emails are optional and used for tournament reach and status notices.
+          Submit five starters and one optional substitute. Team entry is ₹250;
+          the full fee increases the tournament prize pool. Captain email is required,
+          while player emails stay optional for tournament reach and status notices.
         </p>
       </section>
 
@@ -143,6 +144,7 @@ export default function RegisterPage() {
         <aside className="registrationRail">
           <div className="railBlock"><span>ROSTER SPEC</span><strong>05</strong><p>Required starters</p></div>
           <div className="railBlock"><span>SUBSTITUTE</span><strong>01</strong><p>Optional reserve slot</p></div>
+          <div className="railBlock"><span>ENTRY FEE</span><strong>₹250</strong><p>100% adds to prize pool</p></div>
           <div className="railChecklist">
             <span>BEFORE SUBMITTING</span>
             <ol>
@@ -150,6 +152,7 @@ export default function RegisterPage() {
               <li>Check MLBB and server IDs.</li>
               <li>Mark one starter as captain.</li>
               <li>Use a reachable captain email.</li>
+              <li>Team entry fee is ₹250.</li>
             </ol>
           </div>
         </aside>
