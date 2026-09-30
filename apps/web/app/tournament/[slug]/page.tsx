@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getTournamentBySlug } from "@/lib/tournaments";
 import AccountNavAction from "@/components/AccountNavAction";
+import EventCountdown from "@/components/EventCountdown";
 import TournamentLiveBoard from "@/components/TournamentLiveBoard";
 import TournamentPrizePool from "@/components/TournamentPrizePool";
 
@@ -16,34 +17,30 @@ export default async function TournamentPage({
 }) {
   const { slug } = await params;
   const tournament = await getTournamentBySlug(slug);
-
   if (!tournament) notFound();
 
-  const [yearText, monthText, dayText] = tournament.date.split("-");
-  const day = dayText.padStart(2, "0");
-  const month = new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    timeZone: "UTC",
-  })
-    .format(new Date(Date.UTC(Number(yearText), Number(monthText) - 1, 1)))
-    .toUpperCase();
-  const year = Number(yearText);
-
   const phases = [
-    ["01", "Registration + verification", "Teams submit the roster, staff verify it, and accepted teams become eligible for check-in."],
-    ["02", "Check-in", "The checked-in field is locked when the event starts. That final count decides the fast format."],
-    ["03", "Fast Swiss", "9–12 teams play 3 BO1 rounds; 13–24 teams play 4 BO1 rounds. Same-score teams are paired while rematches are avoided."],
-    ["04", "Top 4", "Swiss standings lock the playoff seeds: #1 vs #4 and #2 vs #3, both BO3."],
-    ["05", "Grand Final", "Semifinal winners move directly into a BO3 grand final. No third-place match."],
+    ["01", "Registration", "Submit a complete 5+1 roster. Captain email is required and staff verify the entry before check-in."],
+    ["02", "Check-in", "Only verified teams that are actually present are locked into the competition field."],
+    ["03", "Fast Swiss", "9–12 teams play 3 BO1 rounds. 13–24 teams play 4. Same-score pairing, rematches avoided."],
+    ["04", "Top 4", "Swiss positions lock #1 vs #4 and #2 vs #3. Both semifinals are BO3."],
+    ["05", "Grand Final", "Semifinal winners move directly to a BO3 final. No third-place match."],
   ];
 
   return (
-    <main className="siteShell">
-      <nav className="navBar compact">
-        <a className="brand" href="/">
+    <main className="siteShell premiumSite eventPage">
+      <nav className="navBar premiumNav compact">
+        <a className="brand premiumBrand" href="/">
           <span className="brandMark">R//C</span>
           <span className="brandWord">Riftcore</span>
         </a>
+
+        <div className="premiumNavSignal">
+          <i />
+          <span>TOURNAMENT #001</span>
+          <b>{tournament.game}</b>
+        </div>
+
         <div className="navLinks">
           <a href="/">Home</a>
           <a href="/register">Register</a>
@@ -52,143 +49,133 @@ export default async function TournamentPage({
         </div>
       </nav>
 
-      <section className="tournamentHero">
-        <div className="tournamentHeading">
-          <div className="signalRow">
-            <span className="liveDot" />
-            <span>TOURNAMENT / {tournament.game}</span>
-            <span className="signalMuted">{tournament.status.toUpperCase()}</span>
+      <section className="eventHeroPremium">
+        <div className="eventHeroBackdrop" />
+
+        <div className="eventHeroMain">
+          <div className="eventHeroMeta">
+            <span>RIFTCORE OPEN // 001</span>
+            <span>{tournament.game}</span>
+            <span>INDIA</span>
           </div>
-          <h1 className="displayTitle">{tournament.name}</h1>
-          <p className="heroLede">
-            Register your roster, follow the growing prize pool, and return here
-            on match day for live pairings, standings, announcements and results.
+
+          <h1>
+            13 OCT
+            <span>RIFTCORE OPEN</span>
+          </h1>
+
+          <p>
+            Fast Swiss into a four-team playoff. A compact MLBB tournament built
+            to move quickly without losing match control, standings or referee
+            clarity.
           </p>
-          <div className="heroActions">
-            <a className="ctaPrimary" href="/register">
-              <span>Register team</span>
+
+          <div className="eventHeroActions">
+            <a className="ctaPrimary premiumPrimary" href="/register">
+              <span>Register team · ₹250</span>
               <span>↗</span>
             </a>
+            <a className="ctaGhost premiumGhost" href="#matchday">
+              View matchday
+            </a>
+          </div>
+
+          <div className="eventHeroSpecs">
+            <div><span>ROSTER</span><strong>{tournament.teamSize} + {tournament.substituteSlots}</strong><small>STARTERS + SUB</small></div>
+            <div><span>FORMAT</span><strong>{displayValue(tournament.format)}</strong><small>FIELD-DEPENDENT</small></div>
+            <div><span>CAP</span><strong>{displayValue(tournament.maxTeams, "OPEN")}</strong><small>TEAMS</small></div>
+            <div><span>REGION</span><strong>INDIA</strong><small>IST MATCHDAY</small></div>
           </div>
         </div>
 
-        <aside className="datePanel">
-          <div className="datePanelTop">
-            <span>OPERATION DATE</span>
-            <span>IST</span>
+        <aside className="eventHeroSide">
+          <div className="eventHeroStatus">
+            <div><i /><span>PRE-EVENT SIGNAL</span></div>
+            <b>{tournament.status.toUpperCase()}</b>
           </div>
-          <div className="dateHuge">{day}</div>
-          <div className="dateBottom">
-            <strong>{month}</strong>
-            <span>{year}</span>
+
+          <EventCountdown
+            slug={slug}
+            eventDate={tournament.date}
+          />
+
+          <div className="eventHeroPrize">
+            <span>PRIZE MODEL</span>
+            <strong>₹2,000 <i>+</i></strong>
+            <p>₹250 from every active team and 100% of verified donations extend the public prize pool.</p>
           </div>
         </aside>
       </section>
 
-      <section className="statMatrix">
-        <article>
-          <span>STATUS</span>
-          <strong>{tournament.status}</strong>
-          <small>Registration → match day → results</small>
-        </article>
-        <article>
-          <span>ROSTER</span>
-          <strong>{tournament.teamSize} + {tournament.substituteSlots}</strong>
-          <small>Starters + substitutes</small>
-        </article>
-        <article>
-          <span>FORMAT</span>
-          <strong>{displayValue(tournament.format)}</strong>
-          <small>Fast format based on checked-in field</small>
-        </article>
-        <article>
-          <span>MAX TEAMS</span>
-          <strong>{displayValue(tournament.maxTeams, "OPEN")}</strong>
-          <small>Registration capacity</small>
-        </article>
-      </section>
+      <nav className="eventSubnav" aria-label="Tournament sections">
+        <a href="#matchday"><i />MATCHDAY</a>
+        <a href="#prize">PRIZE</a>
+        <a href="#format">FORMAT</a>
+        <a href="/register">REGISTER ↗</a>
+      </nav>
 
-      <TournamentPrizePool slug={slug} />
+      <div id="matchday">
+        <TournamentLiveBoard slug={slug} />
+      </div>
 
-      <TournamentLiveBoard slug={slug} />
+      <div id="prize">
+        <TournamentPrizePool slug={slug} />
+      </div>
 
-      <section className="tournamentBody">
-        <div className="briefPanel">
-          <div className="panelLabel">
-            <span>/ OPERATION FLOW</span>
-            <span>05 STAGES</span>
+      <section className="eventFormatSection" id="format">
+        <div className="premiumSectionIntro">
+          <div>
+            <span>/ COMPETITION MAP</span>
+            <h2>Five stages.<br />No dead time.</h2>
           </div>
-
-          <div className="phaseList">
-            {phases.map(([code, title, copy]) => (
-              <article key={code}>
-                <span>{code}</span>
-                <div>
-                  <h2>{title}</h2>
-                  <p>{copy}</p>
-                </div>
-                <i />
-              </article>
-            ))}
-          </div>
+          <p>
+            The format adapts to the checked-in field so Tournament #001 stays
+            finishable in a single focused event window.
+          </p>
         </div>
 
-        <aside className="tournamentSide">
-          <div className="sideCard">
-            <span className="panelLabelSolo">ENTRY + PRIZE</span>
-            <strong>₹250 / TEAM</strong>
-            <p>
-              The prize pool starts at ₹2,000. Every active registration adds the
-              full ₹250 entry fee, and verified donations are added in full.
-            </p>
-          </div>
+        <div className="eventPhaseRail">
+          {phases.map(([code, title, copy], index) => (
+            <article key={code}>
+              <div className="eventPhaseCode"><span>{code}</span>{index < phases.length - 1 && <i />}</div>
+              <div><h3>{title}</h3><p>{copy}</p></div>
+            </article>
+          ))}
+        </div>
 
-          <div className="sideCard">
-            <span className="panelLabelSolo">REGISTRATION WINDOW</span>
-            <strong>{tournament.registration.opensAt ? "Scheduled" : "Open configuration"}</strong>
-            <p>
-              Registration timing is controlled by tournament operations. Team
-              submissions are validated server-side before acceptance.
-            </p>
-          </div>
+        <div className="eventRulesGrid">
+          <article>
+            <span>SWISS</span>
+            <strong>BO1</strong>
+            <p>Short rounds keep the event moving while standings still reward consistent wins.</p>
+          </article>
+          <article>
+            <span>TOP CUT</span>
+            <strong>#1×#4 / #2×#3</strong>
+            <p>The top four Swiss positions convert directly into two BO3 semifinals.</p>
+          </article>
+          <article>
+            <span>GRAND FINAL</span>
+            <strong>BO3</strong>
+            <p>No third-place match. The event resolves directly into the championship series.</p>
+          </article>
+          <article>
+            <span>PARALLEL FLOOR</span>
+            <strong>{tournament.fastFormat?.maxConcurrentMatches ?? 8}</strong>
+            <p>Riftcore batches simultaneous matches to compress the overall event runtime.</p>
+          </article>
+        </div>
+      </section>
 
-          <div className="sideCard">
-            <span className="panelLabelSolo">COMPETITIVE SETTINGS</span>
-            <dl>
-              <div>
-                <dt>Swiss</dt>
-                <dd>BO1</dd>
-              </div>
-              <div>
-                <dt>Playoffs</dt>
-                <dd>TOP 4 · BO3</dd>
-              </div>
-              <div>
-                <dt>Parallel matches</dt>
-                <dd>{tournament.fastFormat?.maxConcurrentMatches ?? 8}</dd>
-              </div>
-              <div>
-                <dt>Target runtime</dt>
-                <dd>~5 HOURS</dd>
-              </div>
-            </dl>
-          </div>
-
-          <div className="sideCard">
-            <span className="panelLabelSolo">COMMUNITY SIGNAL</span>
-            <strong>Stay connected</strong>
-            <p>Official Telegram and Discord links live in the Riftcore community hub for announcements and match-day coordination.</p>
-            <a className="textLink compactLink" href="/community">Open community →</a>
-          </div>
-
-          <a className="sideCta" href="/register">
-            <span>
-              <small>NEXT ACTION</small>
-              Register your roster
-            </span>
-            <b>→</b>
-          </a>
-        </aside>
+      <section className="eventBottomCta">
+        <div>
+          <span>READY FOR OPERATION #001?</span>
+          <h2>Bring the roster.<br />We run the rest.</h2>
+        </div>
+        <a className="ctaPrimary premiumPrimary" href="/register">
+          <span>Register for ₹250</span>
+          <span>↗</span>
+        </a>
       </section>
     </main>
   );
