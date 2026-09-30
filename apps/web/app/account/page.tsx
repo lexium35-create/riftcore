@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import BrandIcon, { type BrandName } from "@/components/BrandIcon";
 import { getRiftcoreBrowserSupabase } from "@/lib/supabase-browser";
 import styles from "../user-auth.module.css";
 
@@ -36,11 +37,11 @@ type MyRegistration = {
   submitted_at: string;
 };
 
-const platformOptions = [
-  { provider: "google", label: "Google" },
-  { provider: "discord", label: "Discord" },
-  { provider: "github", label: "GitHub" },
-  { provider: "custom:telegram", label: "Telegram" },
+const platformOptions: Array<{ provider: string; label: string; brand: BrandName }> = [
+  { provider: "google", label: "Google", brand: "google" },
+  { provider: "discord", label: "Discord", brand: "discord" },
+  { provider: "github", label: "GitHub", brand: "github" },
+  { provider: "custom:telegram", label: "Telegram", brand: "telegram" },
 ];
 
 function platformLabel(provider: string): string {
@@ -232,7 +233,10 @@ export default function AccountPage() {
               const detail = bound?.identity_data?.email ?? bound?.identity_data?.preferred_username ?? bound?.identity_data?.user_name ?? bound?.identity_data?.name;
               return (
                 <article className={styles.platformCard} key={option.provider}>
-                  <div><span>{option.label}</span><small>{bound ? (detail ? String(detail) : "Connected") : "Not bound"}</small></div>
+                  <div className={styles.platformIdentity}>
+                    <span className={styles.platformIcon}><BrandIcon brand={option.brand} size={28} /></span>
+                    <div><span>{option.label}</span><small>{bound ? (detail ? String(detail) : "Connected") : "Not bound"}</small></div>
+                  </div>
                   {bound ? (
                     <button disabled={linking !== null || identities.length <= 1} onClick={() => void unlinkPlatform(bound)}>{identities.length <= 1 ? "Primary" : "Unbind"}</button>
                   ) : (

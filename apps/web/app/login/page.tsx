@@ -2,16 +2,23 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import BrandIcon, { type BrandName } from "@/components/BrandIcon";
 import { getRiftcoreBrowserSupabase } from "@/lib/supabase-browser";
 import styles from "../user-auth.module.css";
 
 type OAuthProvider = "google" | "discord" | "github" | "custom:telegram";
 
-const providers: Array<{ id: OAuthProvider; label: string; short: string; scopes?: string }> = [
-  { id: "google", label: "Continue with Google", short: "Google" },
-  { id: "discord", label: "Continue with Discord", short: "Discord", scopes: "identify email" },
-  { id: "github", label: "Continue with GitHub", short: "GitHub", scopes: "read:user user:email" },
-  { id: "custom:telegram", label: "Continue with Telegram", short: "Telegram" },
+const providers: Array<{
+  id: OAuthProvider;
+  label: string;
+  detail: string;
+  brand: BrandName;
+  scopes?: string;
+}> = [
+  { id: "google", label: "Continue with Google", detail: "GOOGLE IDENTITY", brand: "google" },
+  { id: "discord", label: "Continue with Discord", detail: "DISCORD", brand: "discord", scopes: "identify email" },
+  { id: "github", label: "Continue with GitHub", detail: "GITHUB", brand: "github", scopes: "read:user user:email" },
+  { id: "custom:telegram", label: "Continue with Telegram", detail: "TELEGRAM", brand: "telegram" },
 ];
 
 function safeNext(): string {
@@ -73,47 +80,71 @@ export default function LoginPage() {
   return (
     <main className={styles.shell}>
       <section className={styles.brandArea}>
+        <div className={styles.authBackdrop} />
         <a className={styles.brand} href="/">
           <span className={styles.mark}>R//C</span>
           <span className={styles.word}>Riftcore</span>
         </a>
+
+        <div className={styles.authSignal}>
+          <i />
+          <span>IDENTITY GATE // ONLINE</span>
+          <b>RIFTCORE ID</b>
+        </div>
+
         <div className={styles.statement}>
-          <span className={styles.kicker}>RIFTCORE / USER IDENTITY</span>
-          <h1>Enter your<span>competitive ID.</span></h1>
+          <span className={styles.kicker}>ONE ACCOUNT / EVERY OPERATION</span>
+          <h1>ENTER THE<span>CONTROL LAYER.</span></h1>
           <p>
-            One Riftcore account for tournament registration, team activity,
-            account recovery and — if assigned — staff operations.
+            Your Riftcore identity follows tournament registrations, bound
+            platforms, match activity and staff permissions without splitting
+            you into separate accounts.
           </p>
         </div>
-        <span className={styles.footnote}>AUTHENTICATION / SUPABASE + RESEND</span>
+
+        <div className={styles.authStatRail}>
+          <div><span>EVENT</span><strong>#001</strong></div>
+          <div><span>GAME</span><strong>MLBB</strong></div>
+          <div><span>DATE</span><strong>13 OCT</strong></div>
+          <div><span>REGION</span><strong>INDIA</strong></div>
+        </div>
       </section>
 
       <section className={styles.panel}>
         <div className={styles.panelInner}>
-          <span className={styles.panelKicker}>WELCOME BACK</span>
-          <h2>Sign in.</h2>
+          <div className={styles.authPanelHeader}>
+            <div><span className={styles.panelKicker}>RIFTCORE / SIGN IN</span><small>SECURE SESSION</small></div>
+            <b>01</b>
+          </div>
+
+          <h2>Welcome back.</h2>
           <p className={styles.panelLead}>
-            Use your Riftcore account. Operator access is a role on top of this
-            same identity — not a separate login.
+            Continue with a bound platform or use your Riftcore email identity.
           </p>
 
           <div className={styles.socials}>
             {providers.map((provider) => (
               <button
                 className={styles.socialButton}
+                data-provider={provider.id}
                 disabled={busy !== null}
                 key={provider.id}
                 onClick={() => void oauth(provider.id)}
                 type="button"
               >
-                <span>{provider.short}</span>
-                <strong>{busy === provider.id ? "Redirecting…" : provider.label}</strong>
+                <span className={styles.providerIcon}>
+                  <BrandIcon brand={provider.brand} size={21} />
+                </span>
+                <span className={styles.providerCopy}>
+                  <small>{provider.detail}</small>
+                  <strong>{busy === provider.id ? "Redirecting…" : provider.label}</strong>
+                </span>
                 <b>↗</b>
               </button>
             ))}
           </div>
 
-          <div className={styles.divider}>or use email</div>
+          <div className={styles.divider}>RIFTCORE EMAIL</div>
 
           <form className={styles.form} onSubmit={submit}>
             <label>
@@ -139,7 +170,7 @@ export default function LoginPage() {
               />
             </label>
             <button className={styles.primary} disabled={busy !== null} type="submit">
-              <span>{busy === "email" ? "Signing in…" : "Sign in"}</span>
+              <span>{busy === "email" ? "Signing in…" : "Enter Riftcore"}</span>
               <span>→</span>
             </button>
           </form>
@@ -147,8 +178,14 @@ export default function LoginPage() {
           {error && <p className={styles.error}>{error}</p>}
 
           <div className={styles.links}>
-            <a href="/signup">Create account</a>
-            <a href="/forgot-password">Forgot password?</a>
+            <a href="/signup">Create Riftcore ID</a>
+            <a href="/forgot-password">Recover access</a>
+          </div>
+
+          <div className={styles.authTrustLine}>
+            <span>AUTH / SUPABASE</span>
+            <span>MAIL / RESEND</span>
+            <span>SESSION / ENCRYPTED</span>
           </div>
         </div>
       </section>
