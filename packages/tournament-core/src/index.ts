@@ -245,8 +245,15 @@ export interface TournamentEngineMatch {
   teamAScore: number;
   teamBScore: number;
   winnerEntryId?: string | null;
-  status: "scheduled" | "final";
+  status: "scheduled" | "ready" | "live" | "final";
   isBye: boolean;
+  scheduledAt?: string | null;
+  startedAt?: string | null;
+  completedAt?: string | null;
+  refereeName?: string | null;
+  streamed?: boolean;
+  teamAReady?: boolean;
+  teamBReady?: boolean;
 }
 
 export interface SwissStanding {
