@@ -734,3 +734,472 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* =========================================================
+   PREMIUM IDENTITY SYSTEM
+   ========================================================= */
+
+.shell {
+  grid-template-columns: minmax(0, 1.15fr) minmax(440px, 570px);
+  background:
+    radial-gradient(circle at 18% 76%, rgba(210,255,99,.07), transparent 28%),
+    linear-gradient(110deg, rgba(255,255,255,.015), transparent 35%),
+    #050607;
+}
+
+.brandArea {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 26px clamp(28px, 5vw, 76px) 34px;
+  border-right-color: rgba(205,224,231,.13);
+}
+
+.authBackdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+  background-size: 74px 74px;
+  mask-image: linear-gradient(90deg, #000, rgba(0,0,0,.8) 65%, transparent);
+}
+
+.brandArea::before {
+  content: "R//C";
+  position: absolute;
+  z-index: -1;
+  left: -28px;
+  bottom: 86px;
+  color: rgba(255,255,255,.022);
+  font-size: min(31vw, 420px);
+  font-weight: 950;
+  letter-spacing: -.09em;
+  line-height: .7;
+}
+
+.brandArea::after {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  left: -220px;
+  bottom: -260px;
+  z-index: -1;
+  border-radius: 50%;
+  background: rgba(210,255,99,.07);
+  filter: blur(70px);
+}
+
+.mark {
+  border-color: #d2ff63;
+  color: #d2ff63;
+}
+
+.authSignal {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 36px;
+  border: 1px solid rgba(205,224,231,.13);
+  background: rgba(255,255,255,.012);
+  padding: 8px 9px;
+}
+
+.authSignal i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d2ff63;
+  box-shadow: 0 0 14px rgba(210,255,99,.5);
+}
+
+.authSignal span,
+.authSignal b {
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.authSignal span {
+  color: #788489;
+}
+
+.authSignal b {
+  color: #d2ff63;
+}
+
+.statement {
+  max-width: 820px;
+  padding: 48px 0 30px;
+}
+
+.statement h1 {
+  margin-top: 17px;
+  font-size: clamp(68px, 8vw, 132px);
+  line-height: .76;
+  letter-spacing: -.075em;
+}
+
+.statement h1 span {
+  margin-left: 7%;
+  -webkit-text-stroke-color: rgba(222,232,228,.48);
+}
+
+.statement p {
+  max-width: 640px;
+  margin-top: 28px;
+  color: #7f8b8f;
+  font-size: 13px;
+  line-height: 1.72;
+}
+
+.authStatRail {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: auto;
+  border-top: 1px solid rgba(205,224,231,.13);
+  border-left: 1px solid rgba(205,224,231,.13);
+}
+
+.authStatRail > div {
+  min-height: 70px;
+  display: grid;
+  align-content: center;
+  gap: 7px;
+  padding: 0 10px;
+  border-right: 1px solid rgba(205,224,231,.13);
+  border-bottom: 1px solid rgba(205,224,231,.13);
+}
+
+.authStatRail span {
+  color: #4e595e;
+  font-size: 6px;
+  font-weight: 900;
+  letter-spacing: .1em;
+}
+
+.authStatRail strong {
+  overflow: hidden;
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panel {
+  padding: clamp(30px, 4vw, 58px);
+  border-left: 0;
+  background:
+    radial-gradient(circle at 100% 0, rgba(117,169,255,.035), transparent 28%),
+    rgba(7,9,10,.94);
+}
+
+.panelInner {
+  max-width: 460px;
+}
+
+.authPanelHeader {
+  min-height: 46px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(205,224,231,.13);
+}
+
+.authPanelHeader > div {
+  display: grid;
+  gap: 5px;
+}
+
+.authPanelHeader small {
+  color: #505b60;
+  font-size: 6px;
+  font-weight: 900;
+  letter-spacing: .11em;
+}
+
+.authPanelHeader > b {
+  color: #283136;
+  font-size: 30px;
+  line-height: .9;
+}
+
+.panel h2 {
+  margin-top: 22px;
+  font-size: clamp(42px, 5vw, 64px);
+}
+
+.panelLead {
+  color: #778388;
+  font-size: 11px;
+}
+
+.socials {
+  gap: 7px;
+  margin-top: 24px;
+}
+
+.socialButton {
+  min-height: 58px;
+  grid-template-columns: 44px minmax(0,1fr) 18px;
+  gap: 10px;
+  border-color: rgba(205,224,231,.14);
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.018), transparent 25%),
+    #080a0b;
+  padding: 0 12px;
+  transition: transform .16s ease, border-color .16s ease, background .16s ease;
+}
+
+.socialButton:hover {
+  transform: translateX(2px);
+  border-color: rgba(205,224,231,.28);
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.026), transparent 30%),
+    #090c0e;
+}
+
+.providerIcon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(205,224,231,.12);
+  background: #0b0e10;
+}
+
+.socialButton[data-provider="google"] .providerIcon {
+  background: #fff;
+  border-color: #fff;
+}
+
+.providerCopy {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.providerCopy small {
+  color: #4e595e;
+  font-size: 6px;
+  font-weight: 900;
+  letter-spacing: .1em;
+}
+
+.providerCopy strong {
+  overflow: hidden;
+  color: #dfe5e2;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.socialButton > b {
+  color: #536066;
+}
+
+.form input {
+  min-height: 50px;
+  border-color: rgba(205,224,231,.14);
+  background: #07090a;
+}
+
+.form input:focus {
+  border-color: rgba(210,255,99,.48);
+  box-shadow: 0 0 0 3px rgba(210,255,99,.035);
+}
+
+.primary {
+  min-height: 52px;
+  border-color: #d2ff63;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.16), transparent 26%),
+    #d2ff63;
+  color: #071006;
+}
+
+.divider {
+  margin-block: 20px;
+}
+
+.authTrustLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin-top: 26px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(205,224,231,.12);
+}
+
+.authTrustLine span {
+  color: #3f494e;
+  font-size: 6px;
+  font-weight: 900;
+  letter-spacing: .1em;
+}
+
+/* Account identity cards */
+.accountShell {
+  background:
+    radial-gradient(circle at 78% 4%, rgba(210,255,99,.045), transparent 28%),
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
+    #050607;
+  background-size: auto, 54px 54px, 54px 54px, auto;
+}
+
+.accountWrap {
+  width: min(1260px, 100%);
+}
+
+.accountNav {
+  min-height: 70px;
+  border-bottom-color: rgba(205,224,231,.13);
+}
+
+.accountHero {
+  grid-template-columns: minmax(0,1fr) 360px;
+  gap: 56px;
+  padding-top: 86px;
+}
+
+.accountHero h1 {
+  font-size: clamp(60px, 8vw, 110px);
+  line-height: .78;
+}
+
+.identityCard,
+.accountCard,
+.fullCard {
+  border-color: rgba(205,224,231,.13);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.015), transparent 45%),
+    rgba(7,9,10,.8);
+}
+
+.identityCard {
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.platformGrid {
+  gap: 10px;
+}
+
+.platformCard {
+  min-height: 150px;
+  border-color: rgba(205,224,231,.13);
+  background: #080a0b;
+  padding: 13px;
+}
+
+.platformIdentity {
+  display: grid !important;
+  grid-template-columns: 42px minmax(0,1fr);
+  gap: 10px !important;
+  align-items: center;
+}
+
+.platformIcon {
+  width: 42px;
+  height: 42px;
+  display: grid !important;
+  place-items: center;
+  border: 1px solid rgba(205,224,231,.12);
+  background: #0b0e10;
+}
+
+.platformIdentity > div {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.platformIdentity > div > span {
+  font-size: 11px;
+}
+
+.platformIdentity > div > small {
+  overflow: hidden;
+  color: #667277;
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.platformCard button {
+  border-color: rgba(205,224,231,.18);
+  background: rgba(255,255,255,.012);
+}
+
+.platformCard button:hover:not(:disabled) {
+  border-color: rgba(210,255,99,.34);
+  color: #d2ff63;
+}
+
+@media (max-width: 900px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .brandArea {
+    min-height: 520px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(205,224,231,.13);
+  }
+
+  .statement h1 span {
+    margin-left: 0;
+  }
+
+  .accountHero {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .brandArea {
+    min-height: 480px;
+    padding: 18px;
+  }
+
+  .authSignal {
+    margin-top: 26px;
+  }
+
+  .statement {
+    padding-top: 42px;
+  }
+
+  .statement h1 {
+    font-size: 18vw;
+  }
+
+  .authStatRail {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .panel {
+    padding: 34px 14px 54px;
+  }
+
+  .socialButton {
+    grid-template-columns: 40px minmax(0,1fr) 14px;
+  }
+
+  .providerIcon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .accountShell {
+    padding: 10px;
+  }
+}
