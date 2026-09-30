@@ -99,11 +99,7 @@ export default async function TournamentPage({
             eventDate={tournament.date}
           />
 
-          <div className="eventHeroPrize">
-            <span>PRIZE MODEL</span>
-            <strong>₹2,000 <i>+</i></strong>
-            <p>₹250 from every active team and 100% of verified donations extend the public prize pool.</p>
-          </div>
+          <TournamentPrizePool slug={slug} variant="signal" />
         </aside>
       </section>
 

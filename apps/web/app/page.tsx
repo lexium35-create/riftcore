@@ -1,6 +1,7 @@
 import AccountNavAction from "@/components/AccountNavAction";
 import BrandIcon from "@/components/BrandIcon";
 import EventCountdown from "@/components/EventCountdown";
+import TournamentPrizePool from "@/components/TournamentPrizePool";
 
 const systems = [
   ["01", "Roster Intake", "Structured 5+1 rosters, captain identity, MLBB IDs and server validation before a team enters competition."],
@@ -87,6 +88,8 @@ export default function Home() {
             slug="riftcore-2026-10-13"
             eventDate="2026-10-13"
           />
+
+          <TournamentPrizePool slug="riftcore-2026-10-13" variant="signal" />
 
           <div className="hudEventCard">
             <div className="hudDateBlock">
