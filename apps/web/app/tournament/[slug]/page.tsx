@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getTournamentBySlug } from "@/lib/tournaments";
 import AccountNavAction from "@/components/AccountNavAction";
+import TournamentLiveBoard from "@/components/TournamentLiveBoard";
 
 function displayValue(value: string | number | null | undefined, fallback = "TBD") {
   if (value === null || value === undefined || value === "") return fallback;
@@ -28,11 +29,11 @@ export default async function TournamentPage({
   const year = Number(yearText);
 
   const phases = [
-    ["01", "Registration", "Team details, roster and captain identity enter the system."],
-    ["02", "Verification", "Staff reviews submitted IDs and marks eligible teams verified."],
-    ["03", "Check-in", "Verified teams confirm readiness before the tournament window."],
-    ["04", "Match ops", "Lobby coordination, referee control and provisional score reports."],
-    ["05", "Finalization", "Validated results move into standings and tournament history."],
+    ["01", "Registration + verification", "Teams submit the roster, staff verify it, and accepted teams become eligible for check-in."],
+    ["02", "Check-in", "The checked-in field is locked when the event starts. That final count decides the fast format."],
+    ["03", "Fast Swiss", "9–12 teams play 3 BO1 rounds; 13–24 teams play 4 BO1 rounds. Same-score teams are paired while rematches are avoided."],
+    ["04", "Top 4", "Swiss standings lock the playoff seeds: #1 vs #4 and #2 vs #3, both BO3."],
+    ["05", "Grand Final", "Semifinal winners move directly into a BO3 grand final. No third-place match."],
   ];
 
   return (
@@ -106,6 +107,8 @@ export default async function TournamentPage({
         </article>
       </section>
 
+      <TournamentLiveBoard slug={slug} />
+
       <section className="tournamentBody">
         <div className="briefPanel">
           <div className="panelLabel">
@@ -141,16 +144,20 @@ export default async function TournamentPage({
             <span className="panelLabelSolo">COMPETITIVE SETTINGS</span>
             <dl>
               <div>
-                <dt>Default series</dt>
-                <dd>{tournament.competitive.defaultBestOf ? `BO${tournament.competitive.defaultBestOf}` : "TBD"}</dd>
+                <dt>Swiss</dt>
+                <dd>BO1</dd>
               </div>
               <div>
-                <dt>Grand final</dt>
-                <dd>{tournament.competitive.grandFinalBestOf ? `BO${tournament.competitive.grandFinalBestOf}` : "TBD"}</dd>
+                <dt>Playoffs</dt>
+                <dd>TOP 4 · BO3</dd>
               </div>
               <div>
-                <dt>Prize pool</dt>
-                <dd>{tournament.prizePool.total ? `₹${tournament.prizePool.total.toLocaleString("en-IN")}` : "TBD"}</dd>
+                <dt>Parallel matches</dt>
+                <dd>{tournament.fastFormat?.maxConcurrentMatches ?? 8}</dd>
+              </div>
+              <div>
+                <dt>Target runtime</dt>
+                <dd>~5 HOURS</dd>
               </div>
             </dl>
           </div>

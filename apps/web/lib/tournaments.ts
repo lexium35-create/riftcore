@@ -14,6 +14,20 @@ export interface TournamentConfig extends Tournament {
     grandFinalBestOf: number | null;
     thirdPlaceMatch: boolean | null;
   };
+  fastFormat?: {
+    priority: "fast";
+    targetTeams: number;
+    minSwissTeams: number;
+    maxTeams: number;
+    swissRoundsFor9To12: number;
+    swissRoundsFor13To24: number;
+    playoffCut: number;
+    playoffBestOf: number;
+    maxConcurrentMatches: number;
+    swissSlotMinutes: number;
+    playoffSlotMinutes: number;
+    bufferMinutes: number;
+  };
   prizePool: {
     currency: string;
     total: number | null;

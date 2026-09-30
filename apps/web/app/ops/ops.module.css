@@ -579,3 +579,278 @@
     padding: 15px;
   }
 }
+
+.metricWord {
+  font-size: 22px !important;
+  letter-spacing: .08em !important;
+}
+
+.enginePanel,
+.standingsPanel,
+.matchDesk {
+  margin-top: 48px;
+}
+
+.enginePanel {
+  border: 1px solid #263033;
+  background:
+    linear-gradient(135deg, rgba(181,255,99,.035), transparent 36%),
+    rgba(255,255,255,.012);
+}
+
+.engineIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(320px, .8fr);
+  gap: 36px;
+  padding: 24px;
+}
+
+.engineIntro > div:first-child > span {
+  color: #b5ff63;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .15em;
+}
+
+.engineIntro h2 {
+  margin: 10px 0 0;
+  font-size: clamp(28px, 4vw, 52px);
+  line-height: .95;
+  letter-spacing: -.045em;
+  text-transform: uppercase;
+}
+
+.engineIntro p {
+  max-width: 680px;
+  margin: 16px 0 0;
+  color: #778386;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.engineStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid #263033;
+  border-left: 1px solid #263033;
+}
+
+.engineStats div {
+  min-height: 88px;
+  display: grid;
+  align-content: space-between;
+  padding: 12px;
+  border-right: 1px solid #263033;
+  border-bottom: 1px solid #263033;
+}
+
+.engineStats span {
+  color: #5d696c;
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .1em;
+}
+
+.engineStats strong {
+  font-size: 20px;
+}
+
+.engineActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 16px 24px;
+  border-top: 1px solid #263033;
+}
+
+.standingsTable {
+  margin-top: 12px;
+  border-top: 1px solid #252d30;
+  border-left: 1px solid #252d30;
+}
+
+.standingsHead,
+.standingRow {
+  display: grid;
+  grid-template-columns: 54px minmax(180px, 1fr) 90px 90px 90px;
+  align-items: center;
+  min-height: 48px;
+  border-bottom: 1px solid #252d30;
+}
+
+.standingsHead {
+  min-height: 34px;
+  color: #5e696d;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.standingsHead > *,
+.standingRow > * {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-right: 1px solid #252d30;
+}
+
+.standingRow b {
+  color: #b5ff63;
+}
+
+.standingRow div {
+  display: grid;
+  align-content: center;
+  gap: 3px;
+}
+
+.standingRow div strong {
+  font-size: 11px;
+}
+
+.standingRow div small {
+  color: #5f6b6e;
+  font-size: 8px;
+}
+
+.standingRow > span {
+  color: #aab4b1;
+  font-size: 10px;
+}
+
+.roundGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.roundCard {
+  border: 1px solid #252e31;
+  background: rgba(255,255,255,.012);
+  padding: 15px;
+}
+
+.roundTitle {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid #232b2e;
+  color: #768184;
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.roundTitle strong {
+  color: #b5ff63;
+}
+
+.matchRow {
+  padding: 13px 0;
+  border-bottom: 1px solid #1d2426;
+}
+
+.matchRow:last-child {
+  border-bottom: 0;
+}
+
+.matchTeams {
+  display: grid;
+  gap: 5px;
+}
+
+.matchTeams div {
+  display: grid;
+  grid-template-columns: 1fr 28px;
+  gap: 10px;
+  align-items: center;
+}
+
+.matchTeams span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.matchTeams b {
+  color: #b5ff63;
+  text-align: right;
+}
+
+.matchRow > small {
+  display: block;
+  margin-top: 7px;
+  color: #525e61;
+  font-size: 8px;
+}
+
+.resultButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.resultButtons button {
+  min-height: 30px;
+  border: 1px solid #354044;
+  background: #090c0d;
+  color: #cbd4d1;
+  padding: 0 8px;
+  font: inherit;
+  font-size: 8px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.resultButtons button:hover {
+  border-color: #b5ff63;
+  color: #b5ff63;
+}
+
+.resultButtons button:disabled {
+  cursor: wait;
+  opacity: .45;
+}
+
+.finalBadge {
+  display: inline-block;
+  margin-top: 9px;
+  color: #b5ff63;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .11em;
+}
+
+@media (max-width: 900px) {
+  .engineIntro,
+  .roundGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .engineIntro {
+    padding: 18px 14px;
+  }
+
+  .engineActions {
+    padding: 14px;
+  }
+
+  .standingsTable {
+    overflow-x: auto;
+  }
+
+  .standingsHead,
+  .standingRow {
+    min-width: 540px;
+  }
+}
