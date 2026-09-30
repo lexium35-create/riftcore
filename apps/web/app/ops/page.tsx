@@ -65,6 +65,17 @@ type EngineState = {
   standings: SwissStanding[];
 };
 
+type FinanceState = {
+  basePrizePool: number;
+  joinFee: number;
+  activeRegistrations: number;
+  registrationContribution: number;
+  donationTotal: number;
+  donationCount: number;
+  currentPrizePool: number;
+  projectedMaxPrizePool: number | null;
+};
+
 function duration(minutes: number): string {
   if (!minutes) return "—";
   const hours = Math.floor(minutes / 60);
@@ -90,6 +101,9 @@ export default function OpsPage() {
     matches: [],
     standings: [],
   });
+  const [finance, setFinance] = useState<FinanceState | null>(null);
+  const [donationAmount, setDonationAmount] = useState("");
+  const [donorName, setDonorName] = useState("");
   const [loading, setLoading] = useState(true);
   const [busyKey, setBusyKey] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -125,9 +139,19 @@ export default function OpsPage() {
     setEngine(payload as EngineState);
   }, [sessionToken]);
 
+  const loadFinance = useCallback(async () => {
+    const response = await fetch(
+      `/api/tournaments/${TOURNAMENT_SLUG}/finance`,
+      { cache: "no-store" },
+    );
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.error ?? "Unable to load tournament finance.");
+    setFinance(payload as FinanceState);
+  }, []);
+
   const refreshAll = useCallback(async () => {
-    await Promise.all([loadRegistrations(), loadEngine()]);
-  }, [loadEngine, loadRegistrations]);
+    await Promise.all([loadRegistrations(), loadEngine(), loadFinance()]);
+  }, [loadEngine, loadFinance, loadRegistrations]);
 
   const bootstrap = useCallback(async () => {
     setLoading(true);
@@ -318,6 +342,46 @@ export default function OpsPage() {
     setBusyKey(null);
   }
 
+  async function recordDonation() {
+    const amount = Number.parseInt(donationAmount, 10);
+    if (!Number.isInteger(amount) || amount <= 0) {
+      setError("Enter a valid donation amount in INR.");
+      return;
+    }
+
+    setBusyKey("finance:donation");
+    setError(null);
+    const token = await sessionToken();
+    if (!token) return;
+
+    const response = await fetch(
+      `/api/ops/tournament/${TOURNAMENT_SLUG}/donations`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          amountInr: amount,
+          donorName: donorName || undefined,
+        }),
+      },
+    );
+    const payload = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      setError(payload.error ?? "Unable to record donation.");
+      setBusyKey(null);
+      return;
+    }
+
+    setDonationAmount("");
+    setDonorName("");
+    await refreshAll();
+    setBusyKey(null);
+  }
+
   async function signOut() {
     await supabase.auth.signOut();
     router.replace("/login");
@@ -357,6 +421,55 @@ export default function OpsPage() {
       </section>
 
       {error && <div className={styles.error}>{error}</div>}
+
+      <section className={styles.financePanel}>
+        <div className={styles.financeSummary}>
+          <div>
+            <span>TOURNAMENT #001 / PRIZE POOL</span>
+            <h2>₹{(finance?.currentPrizePool ?? 2000).toLocaleString("en-IN")}</h2>
+            <p>
+              ₹{(finance?.basePrizePool ?? 2000).toLocaleString("en-IN")} base
+              + ₹{(finance?.joinFee ?? 250).toLocaleString("en-IN")} per active team
+              + verified donations.
+            </p>
+          </div>
+          <div className={styles.financeStats}>
+            <div><span>TEAM FEES</span><strong>₹{(finance?.registrationContribution ?? 0).toLocaleString("en-IN")}</strong></div>
+            <div><span>DONATIONS</span><strong>₹{(finance?.donationTotal ?? 0).toLocaleString("en-IN")}</strong></div>
+            <div><span>ACTIVE ENTRIES</span><strong>{finance?.activeRegistrations ?? 0}</strong></div>
+            <div><span>ENTRY FEE</span><strong>₹{(finance?.joinFee ?? 250).toLocaleString("en-IN")}</strong></div>
+          </div>
+        </div>
+
+        {canReview && (
+          <div className={styles.donationRecorder}>
+            <label>
+              <span>DONATION AMOUNT (INR)</span>
+              <input
+                inputMode="numeric"
+                value={donationAmount}
+                onChange={(event) => setDonationAmount(event.target.value.replace(/[^0-9]/g, ""))}
+                placeholder="500"
+              />
+            </label>
+            <label>
+              <span>DONOR NAME (OPTIONAL)</span>
+              <input
+                value={donorName}
+                onChange={(event) => setDonorName(event.target.value)}
+                placeholder="Community member"
+              />
+            </label>
+            <button
+              className={styles.primaryButton}
+              disabled={busyKey !== null}
+              onClick={() => void recordDonation()}
+            >
+              Add verified donation
+            </button>
+          </div>
+        )}
+      </section>
 
       <section className={styles.enginePanel}>
         <div className={styles.engineIntro}>
