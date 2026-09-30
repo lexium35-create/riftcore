@@ -8,8 +8,8 @@
   "status": "draft",
   "teamSize": 5,
   "substituteSlots": 1,
-  "format": null,
-  "maxTeams": null,
+  "format": "Fast Swiss → Top 4",
+  "maxTeams": 24,
   "registration": {
     "opensAt": null,
     "closesAt": null,
@@ -17,9 +17,23 @@
     "checkInClosesAt": null
   },
   "competitive": {
-    "defaultBestOf": null,
-    "grandFinalBestOf": null,
-    "thirdPlaceMatch": null
+    "defaultBestOf": 1,
+    "grandFinalBestOf": 3,
+    "thirdPlaceMatch": false
+  },
+  "fastFormat": {
+    "priority": "fast",
+    "targetTeams": 16,
+    "minSwissTeams": 9,
+    "maxTeams": 24,
+    "swissRoundsFor9To12": 3,
+    "swissRoundsFor13To24": 4,
+    "playoffCut": 4,
+    "playoffBestOf": 3,
+    "maxConcurrentMatches": 8,
+    "swissSlotMinutes": 35,
+    "playoffSlotMinutes": 70,
+    "bufferMinutes": 25
   },
   "prizePool": {
     "currency": "INR",
