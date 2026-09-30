@@ -627,19 +627,23 @@ export default function OpsPage() {
   }
 
   function patchDraft(matchId: string, patch: Partial<MatchDraft>) {
-    setMatchDrafts((current) => ({
-      ...current,
-      [matchId]: {
-        roomCode: "",
-        roomPassword: "",
-        refereeName: "",
-        scheduledAt: "",
-        streamed: false,
-        opsNote: "",
-        ...(current[matchId] ?? {}),
-        ...patch,
-      },
-    }));
+    setMatchDrafts((current) => {
+      const existing =
+        current[matchId] ??
+        ({
+          roomCode: "",
+          roomPassword: "",
+          refereeName: "",
+          scheduledAt: "",
+          streamed: false,
+          opsNote: "",
+        } satisfies MatchDraft);
+
+      return {
+        ...current,
+        [matchId]: { ...existing, ...patch },
+      };
+    });
   }
 
   async function saveMatchOps(matchId: string) {
